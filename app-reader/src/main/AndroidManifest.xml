@@ -11,6 +11,10 @@
             android:fullBackupContent="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Bunny178">
+
+        <meta-data android:name="com.google.android.gms.version"
+                   android:value="@integer/google_play_services_version"/>
+
         <activity
                 android:name=".BrowseActivity"
                 android:label="@string/app_name">
@@ -29,7 +33,10 @@
         <activity
                 android:name=".SingleFragmentActivity"
                 />
-
+        <activity
+                android:name=".AboutActivity"
+                android:label="@string/about"
+                />
         <service
                 android:name=".service.DownloadService"
                 android:exported="false"
@@ -40,6 +47,16 @@
                 android:authorities="info.bunny178.novel.reader"
                 android:enabled="true"
                 android:exported="false"
+                />
+        <meta-data
+                android:name="io.fabric.ApiKey"
+                android:value="20f1d76d72b90387ccae29e481a3c466bb0cb1aa"/>
+
+        <!--Include the AdActivity configChanges and theme. -->
+        <activity
+                android:name="com.google.android.gms.ads.AdActivity"
+                android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+                android:theme="@android:style/Theme.Translucent"
                 />
     </application>
 

@@ -1,4 +1,4 @@
-package us.fc2.novelreader;
+package info.bunny178.novel.reader;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

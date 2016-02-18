@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="banner_unit_id">ca-app-pub-4634175106713978/4538991030</string>
+    <string name="interstitial_unit_id">ca-app-pub-4634175106713978/7492457430</string>
     <string-array name="search_sort_entries">
         <item>@string/view_count</item>
         <item>@string/rating_average</item>

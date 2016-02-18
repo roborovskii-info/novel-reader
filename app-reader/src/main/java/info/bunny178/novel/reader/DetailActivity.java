@@ -1,5 +1,7 @@
 package info.bunny178.novel.reader;
 
+import com.google.android.gms.ads.InterstitialAd;
+
 import com.squareup.picasso.Picasso;
 
 import android.content.Context;
@@ -36,7 +38,10 @@ public class DetailActivity extends AppCompatActivity {
     public static final String EXTRA_NOVEL_ID = "novel_id";
 
     private Novel mNovelData;
+
     private int mNovelId;
+
+    private InterstitialAd mInterstitialAd;
 
     private TextView mProgressView;
 
@@ -59,6 +64,11 @@ public class DetailActivity extends AppCompatActivity {
         }
         mProgressView = (TextView) findViewById(R.id.text_progress);
         mDownloadButton = (Button) findViewById(R.id.btn_read);
+
+        /* インタースティシャル広告の初期化と予めリクエスト */
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.interstitial_unit_id));
+
     }
 
     @Override

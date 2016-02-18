@@ -27,7 +27,6 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import info.bunny178.novel.reader.db.NovelTable;
-import info.bunny178.novel.reader.fragment.AboutFragment;
 import info.bunny178.novel.reader.fragment.ChapterListFragment;
 import info.bunny178.novel.reader.fragment.ImageViewerFragment;
 import info.bunny178.novel.reader.fragment.SettingsFragment;
@@ -207,8 +206,7 @@ public class ViewerActivity extends BaseActivity {
     }
 
     private void startAboutActivity() {
-        Intent intent = new Intent(this, SingleFragmentActivity.class);
-        intent.putExtra(SingleFragmentActivity.EXTRA_FRAGMENT_NAME, AboutFragment.class.getCanonicalName());
+        Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 

@@ -1,5 +1,8 @@
 package info.bunny178.novel.reader;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -15,12 +18,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import info.bunny178.novel.reader.fragment.AboutFragment;
+import com.crashlytics.android.Crashlytics;
+
 import info.bunny178.novel.reader.fragment.LocalListFragment;
 import info.bunny178.novel.reader.fragment.NovelPagerFragment;
 import info.bunny178.novel.reader.fragment.NovelSearchFragment;
 import info.bunny178.novel.reader.fragment.SettingsFragment;
 import info.bunny178.novel.reader.model.Novel;
+import io.fabric.sdk.android.Fabric;
 
 /**
  *
@@ -38,6 +43,7 @@ public class BrowseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Fabric.with(this, new Crashlytics());
         Log.d(LOG_TAG, "# onCreate(Bundle)");
         setContentView(R.layout.activity_browse);
 
@@ -64,6 +70,8 @@ public class BrowseActivity extends AppCompatActivity {
                 setTitle(R.string.find_novel);
             }
         }
+
+        setupAds();
     }
 
     @Override
@@ -103,6 +111,25 @@ public class BrowseActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(mNavigationListener);
     }
 
+    private void setupAds() {
+        String[] deviceIds = {
+                /* 社内 Nexus5 */
+                "3808129125D1716C",
+                /* Xperia Z Ultra */
+                "3E062544D47D0AA2",
+                /* Xperia Z3 */
+                "369C931A07D20553",
+        };
+
+        AdView mAdView = (AdView) findViewById(R.id.ad_view);
+        AdRequest.Builder builder = new AdRequest.Builder();
+        for (String deviceId : deviceIds) {
+            builder.addTestDevice(deviceId);
+        }
+        AdRequest adRequest = builder.build();
+        mAdView.loadAd(adRequest);
+    }
+
     private void startSettingsActivity() {
         Intent intent = new Intent(this, SingleFragmentActivity.class);
         intent.putExtra(SingleFragmentActivity.EXTRA_FRAGMENT_NAME, SettingsFragment.class.getCanonicalName());
@@ -110,8 +137,7 @@ public class BrowseActivity extends AppCompatActivity {
     }
 
     private void startAboutActivity() {
-        Intent intent = new Intent(this, SingleFragmentActivity.class);
-        intent.putExtra(SingleFragmentActivity.EXTRA_FRAGMENT_NAME, AboutFragment.class.getCanonicalName());
+        Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 
