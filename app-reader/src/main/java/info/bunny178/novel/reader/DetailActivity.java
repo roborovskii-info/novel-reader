@@ -1,5 +1,8 @@
 package info.bunny178.novel.reader;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
 import com.squareup.picasso.Picasso;
@@ -65,10 +68,37 @@ public class DetailActivity extends AppCompatActivity {
         mProgressView = (TextView) findViewById(R.id.text_progress);
         mDownloadButton = (Button) findViewById(R.id.btn_read);
 
+        setupAds();
+    }
+
+    /**
+     * インタースティシャル広告を初期化する処理。
+     */
+    private void setupAds() {
+        String[] deviceIds = {
+                /* 社内 Nexus5 */
+                "3808129125D1716C",
+                /* Xperia Z Ultra */
+                "3E062544D47D0AA2",
+                /* Xperia Z3 */
+                "369C931A07D20553",
+        };
+
         /* インタースティシャル広告の初期化と予めリクエスト */
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.interstitial_unit_id));
-
+        AdRequest.Builder builder = new AdRequest.Builder();
+        for (String deviceId : deviceIds) {
+            builder.addTestDevice(deviceId);
+        }
+        AdRequest adRequest = builder.build();
+        mInterstitialAd.loadAd(adRequest);
+        mInterstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                onReadButtonClicked();
+            }
+        });
     }
 
     @Override
@@ -230,24 +260,31 @@ public class DetailActivity extends AppCompatActivity {
     private OnClickListener mOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            Context context = DetailActivity.this;
             int id = v.getId();
             switch (id) {
                 case R.id.btn_read:
-                    if (0 < mNovelData.getDownloadDate().getTime()) {
-                        Intent intent = new Intent(context, ViewerActivity.class);
-                        intent.putExtra(ViewerActivity.EXTRA_NOVEL_ID, mNovelData.getNovelId());
-                        startActivity(intent);
+                    if (mInterstitialAd.isLoaded()) {
+                        mInterstitialAd.show();
                     } else {
-                        Intent intent = new Intent(context, DownloadService.class);
-                        intent.putExtra(DownloadService.EXTRA_NOVEL_ID, mNovelData.getNovelId());
-                        intent.putExtra(DownloadService.EXTRA_RECEIVER, mReceiver);
-                        startService(intent);
+                        onReadButtonClicked();
                     }
                     break;
             }
         }
     };
+
+    private void onReadButtonClicked() {
+        if (0 < mNovelData.getDownloadDate().getTime()) {
+            Intent intent = new Intent(this, ViewerActivity.class);
+            intent.putExtra(ViewerActivity.EXTRA_NOVEL_ID, mNovelData.getNovelId());
+            startActivity(intent);
+        } else {
+            Intent intent = new Intent(this, DownloadService.class);
+            intent.putExtra(DownloadService.EXTRA_NOVEL_ID, mNovelData.getNovelId());
+            intent.putExtra(DownloadService.EXTRA_RECEIVER, mReceiver);
+            startService(intent);
+        }
+    }
 
     private ResultReceiver mReceiver = new ResultReceiver(new Handler()) {
         @Override

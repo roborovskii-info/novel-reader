@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NovelReader.iml" filepath="$PROJECT_DIR$/NovelReader.iml" />
       <module fileurl="file://$PROJECT_DIR$/app-reader/app-reader.iml" filepath="$PROJECT_DIR$/app-reader/app-reader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/novel-reader.iml" filepath="$PROJECT_DIR$/novel-reader.iml" />
     </modules>
   </component>
 </project>
