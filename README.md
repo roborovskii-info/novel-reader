@@ -1,3 +1,5 @@
+[TOC]
+
 # getNovelList
 
 小説一覧を取得します。
