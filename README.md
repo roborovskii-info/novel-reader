@@ -1,13 +1,22 @@
 [TOC]
 
-# getNovelList
+# マーケット紹介文
+
+```
+このアプリは、完全無料で「FC2小説」を読むための"非公式"アプリです。
+恋愛やSF、ファンタジー、ホラー、ミステリー、コメディなど、ユーザーが執筆した様々な小説を読むことができます。
+```
+
+# API仕様
+
+## getNovelList
 
 小説一覧を取得します。
 
-## URL例
+** URL例 **
 http://novel-test.fc2.com/api/getNovelList.php?kind=fame
 
-## 引数
+** 引数 **
 
 * int kensu 1ページあたりの件数。省略した場合は、30件
 * boolean adult アダルト設定。0:一般 1:アダルト。2:両方 省略した場合は、2。
@@ -26,7 +35,7 @@ http://novel-test.fc2.com/api/getNovelList.php?kind=fame
 	rank_opnn 感想数ランキング
 * int id 小説ID(by_id時)、または著者ID(by_author時)、またはジャンルID(by_genre、rank_*時)
 
-## 結果
+** 結果 **
 
 xmlで返ります。
 ランキング以外は、最終更新日の降順(新しいほど上)に並びます。
@@ -75,18 +84,18 @@ xmlで返ります。
 </response>
 ```
 
-# getAuthorList
+## getAuthorList
 
 著者一覧を取得します。
 
-## URL例
+** URL例 **
 
 http://novel-test.fc2.com/api/getAuthorList.php?id=10&kind=by_genre&other_genre=1
 
 http://novel.fc2.com/api/getAuthorList.php?id=12691627&kind=by_author
 
 
-## 引数
+** 引数 **
 
 * int kensu 1ページあたりの件数。省略した場合は、30件
 * boolean adult アダルト設定。0:一般 1:アダルト。2:両方 省略した場合は、2。
@@ -97,7 +106,7 @@ http://novel.fc2.com/api/getAuthorList.php?id=12691627&kind=by_author
 * int id 著者ID(by_author時)、またはジャンルID(by_genre時)
 * boolean other_genre 0:小説リストに他ジャンル小説を載せない。1:他ジャンル小説も載せる。省略した場合は1。
 
-## 結果
+** 結果 **
 
 xmlで返ります。
 会員IDの降順(新しい会員ほど上)に並びます。小説データは最終更新日降順(新しい小説ほど上)に並びます。
@@ -155,14 +164,14 @@ xmlで返ります。
 <response>
 ```
 
-# getBookMarkList
+## getBookMarkList
 
 しおり一覧を取得します。
 
-## URL例
+** URL例 **
 http://novel-test.fc2.com/api/getBookMarkList.php?uid=87&cc=b39b78b203f712cd86facbe0aeaacac420265e80
 
-## 引数
+** 引数 **
 
 * int kensu 1ページあたりの件数。省略した場合は、全件。
 * int page ページ。省略した場合は1。
@@ -171,7 +180,7 @@ http://novel-test.fc2.com/api/getBookMarkList.php?uid=87&cc=b39b78b203f712cd86fa
 例) <? php $cc = sha1 ($uid . 'novelccpass'); ?>
 ccpassは別途添付します。
 
-## 結果
+** 結果 **
 
 xmlで返ります。
 
@@ -201,23 +210,23 @@ xmlで返ります。
 </response>
 ```
 
-# setBookMark
+## setBookMark
 
 しおりをセットします。
 既に同一小説にセットされているしおりがある場合、新しいしおりに置き換わります。(FC2小説Web版の仕様)
 
-## URL例
+** URL例 **
 
 http://novel-test.fc2.com/api/setBookMark.php?uid=87&cc=b39b78b203f712cd86facbe0aeaacac420265e80&novel_id=48188&page=3
 
-## 引数
+** 引数 **
 
 * int novel_id しおり挿入対象小説のID
 * int page 挿入するページ
 * int uid FC2ユーザID
 * string cc FC2ユーザIDにccpassをくっつけてsha1したもの。
 
-## 結果
+** 結果 **
 
 xmlで返ります。
 
@@ -227,21 +236,21 @@ xmlで返ります。
 </response>
 ```
 
-# removeBookMark
+## removeBookMark
 
 しおりを削除します。
 
-## URL例
+** URL例 **
 
 http://novel-test.fc2.com/api/setBookMark.php?uid=87&cc=b39b78b203f712cd86facbe0aeaacac420265e80&novel_id=48188
 
-## 引数
+** 引数 **
 
 * int novel_id しおり削除対象小説のID
 * int uid FC2ユーザID
 * string cc FC2ユーザIDにccpassをくっつけてsha1したもの。
 
-## 結果
+** 結果 **
 
 xmlで返ります。
 
@@ -253,22 +262,22 @@ xmlで返ります。
 
 * 該当するしおりや小説がない時もOKが返ります。
 
-# getNovelContent
+## getNovelContent
 
 小説をDLします。
 
-## URL例
+** URL例 **
 
 http://novel-test.fc2.com/api/getNovelContent.php?id=46519
 http://novel.fc2.com/api/getNovelContent.php?id=168027
 http://novel.fc2.com/api/getNovelContent.php?id=146563
 http://novel.fc2.com/api/getNovelContent.php?id=162978
 
-## 引数
+** 引数 **
 
 * int id 小説のID
 
-## 結果
+** 結果 **
 
 * 該当する小説があった場合、gzip圧縮したxmlが返ります。
 * 最終更新日時が同一の圧縮済ファイルが既にある場合(ファイル名に入れた最終更新日と比べて判断)、DBを見に行かずそのままそのファイルを送信します。
@@ -308,21 +317,21 @@ http://novel.fc2.com/api/getNovelContent.php?id=162978
 </response>
 ```
 
-# getReviewList
+## getReviewList
 
 レビュー一覧を取得します。
 
-## URL例
+** URL例 **
 
 http://novel-test.fc2.com/api/getReviewList.php?id=3357
 
-## 引数
+** 引数 **
 
 * int id 小説ID
 * int kensu 1ページあたりの件数。省略した場合は、全件。
 * int page ページ。省略した場合は1。
 
-## 結果
+** 結果 **
 
 * レビューデータにはidが存在しません。
 
@@ -352,17 +361,17 @@ http://novel-test.fc2.com/api/getReviewList.php?id=3357
 
 レビューを投稿可能かどうか取得します。(レビュー投稿ボタンの表示非表示制御に使います)
 
-## 引数
+** 引数 **
 
 * int novel_id レビュー対象小説のID
 * int uid FC2ユーザID
 * string cc FC2ユーザIDにccpassをくっつけてsha1したもの。
 
-## URL例
+** URL例 **
 
 http://novel-test.fc2.com/api/getIsReviewPostable.php?novel_id=48188&uid=87&cc=b39b78b203f712cd86facbe0aeaacac420265e80
 
-## 結果
+** 結果 **
 
 * 自分の小説には投稿できません。
 * 既に投稿済の小説には投稿できません。
@@ -373,16 +382,16 @@ http://novel-test.fc2.com/api/getIsReviewPostable.php?novel_id=48188&uid=87&cc=b
 </response>
 ```
 
-# setReview
+## setReview
 
 レビューを投稿します。
 
-## URL例
+** URL例 **
 
 例はGETですが、投稿方式はPOSTを想定しています
 http://novel-test.fc2.com/api/setReview.php?novel_id=48188&uid=87&cc=b39b78b203f712cd86facbe0aeaacac420265e80&stars=3&comment=testtest
 
-## 引数
+** 引数 **
 
 * int novel_id レビュー対象小説のID
 * int uid FC2ユーザID
@@ -390,7 +399,7 @@ http://novel-test.fc2.com/api/setReview.php?novel_id=48188&uid=87&cc=b39b78b203f
 * int stars 評価0～5
 * string comment 評価コメント。コメントが空でも投稿できます。(FC2小説Web版の仕様) 文字コードはUTF8、投稿できるコメントは300文字までです。
 
-## 結果
+** 結果 **
 
 * 自分の小説には投稿できません。
 * 既に投稿済の小説には投稿できません。
@@ -401,21 +410,21 @@ http://novel-test.fc2.com/api/setReview.php?novel_id=48188&uid=87&cc=b39b78b203f
 </response>
 ```
 
-# getCommentList
+## getCommentList
 
 感想一覧を取得します。
 
-## URL例
+** URL例 **
 
 http://novel-test.fc2.com/api/getCommentList.php?id=48080
 
-## 引数
+** 引数 **
 
 * int id 小説ID
 * int kensu 1ページあたりの件数。省略した場合は、全件。
 * int page ページ。省略した場合は1。
 
-## 結果
+** 結果 **
 
 * 現在、FC2小説Web版では、is_selfは自分の感想を新着情報として表示しない為に使用しています。一覧表示時は、特に区別はしていません。
 
@@ -446,16 +455,16 @@ http://novel-test.fc2.com/api/getCommentList.php?id=48080
 </response>
 ```
 
-# setComment
+## setComment
 
 感想を投稿します。
 
-## URL例
+** URL例 **
 
 例はGETですが、投稿方式はPOSTを想定しています
 http://novel-test.fc2.com/api/setComment.php?novel_id=48080&ip=218.230.83.20&comment=testtest&name=tester
 
-## 引数
+** 引数 **
 
 * int novel_id レビュー対象小説のID
 * int uid FC2ユーザID。省略可能です。小説著者自身の投稿であるかどうか(is_self)のフラグ立てだけの為に使います。
@@ -464,7 +473,7 @@ http://novel-test.fc2.com/api/setComment.php?novel_id=48080&ip=218.230.83.20&com
 * string comment 感想コメント。文字コードはUTF8、投稿できるコメントは1000文字までです。
 * string ip ユーザのリモートアドレス(REMOTE_ADDR)。DBに記録される他、連続投稿制限(60秒)に使われます。
 
-## 結果
+** 結果 **
 
 ```xml
 <response>
@@ -480,9 +489,9 @@ http://novel.fc2.com/api/getGenreList.php (本番環境)
 http://novel-test.fc2.com/api/getGenreList.php (テスト環境)
 
 
-# getNovelListByKeyword
+## getNovelListByKeyword
 
-## 引数
+** 引数 **
 
 * string sort
 	* ソート項目
@@ -495,5 +504,5 @@ http://novel-test.fc2.com/api/getGenreList.php (テスト環境)
 		* asc 昇順
 		* desc 降順(デフォルト)
 
-## URL例
+** URL例 **
 http://novel-test.fc2.com/api/getNovelListByKeyword.php?keyword=%e3%83%86%e3%82%b9%e3%83%88%20%e3%82%ad%e3%83%bc%e3%83%af%e3%83%bc%e3%83%89&genre=1&adult=0&sort=pv_cnt&order=desc
