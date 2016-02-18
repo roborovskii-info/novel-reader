@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:context=".ViewerActivity">
+
+    <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    <TextView
+            android:id="@+id/text_page_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/page_progress_format"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:background="@color/accent"
+            android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/common_spacing_m"
+            android:layout_above="@+id/container_footer"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="@dimen/common_spacing_s"
+            android:paddingBottom="@dimen/common_spacing_s"
+            android:paddingLeft="@dimen/common_spacing_m"
+            android:paddingRight="@dimen/common_spacing_m"
+            />
+
+    <FrameLayout
+            android:id="@+id/container_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@color/footer_background"
+            android:minHeight="?attr/actionBarSize">
+        <SeekBar
+                android:id="@+id/seek_page"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                />
+    </FrameLayout>
+
+    <include
+            layout="@layout/toolbar"
+            />
+</RelativeLayout>
+

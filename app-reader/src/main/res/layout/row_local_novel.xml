@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:padding="@dimen/common_spacing_m">
+
+    <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+        <ImageView
+                android:id="@+id/image_cover"
+                android:src="@mipmap/ic_launcher"
+                android:layout_width="@dimen/cover_art_small_width"
+                android:layout_height="@dimen/cover_art_small_height"
+                android:scaleType="center"
+                android:background="@color/cover_background"
+                />
+
+        <TextView
+                android:id="@+id/text_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_spacing_s"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:background="@color/accent"
+                android:textColor="@color/white"
+                android:singleLine="true"
+                android:layout_gravity="bottom|end"
+                />
+    </FrameLayout>
+
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/common_spacing_m"
+            android:layout_weight="1.0"
+            android:orientation="vertical">
+        <TextView
+                android:id="@+id/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:singleLine="true"
+                />
+        <TextView
+                android:id="@+id/text_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:singleLine="true"
+                />
+        <TextView
+                android:id="@+id/text_genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:singleLine="true"
+                />
+        <TextView
+                android:id="@+id/text_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:singleLine="true"
+                />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="search_sort_entries">
+        <item>@string/view_count</item>
+        <item>@string/rating_average</item>
+        <item>@string/update_date</item>
+    </string-array>
+    <string-array name="search_sort_entry_values">
+        <item>pv_cnt</item>
+        <item>rate</item>
+        <item>lastmod</item>
+    </string-array>
+    <string-array name="search_order_entries">
+        <item>@string/ascending_order</item>
+        <item>@string/descending_order</item>
+    </string-array>
+    <string-array name="search_order_entry_values">
+        <item>asc</item>
+        <item>desc</item>
+    </string-array>
+
+    <string name="pref_key_show_all_content">all_content</string>
+
+    <string name="pref_key_theme" translatable="false">theme</string>
+    <string name="theme_value_light">light</string>
+    <string name="theme_value_dark">dark</string>
+    <string-array name="theme_entries">
+        <item>@string/theme_light</item>
+        <item>@string/theme_dark</item>
+    </string-array>
+    <string-array name="theme_entry_values">
+        <item>@string/theme_value_light</item>
+        <item>@string/theme_value_dark</item>
+    </string-array>
+
+    <string name="pref_key_line_spacing" translatable="false">line_spacing</string>
+    <string name="pref_default_line_spacing">0.6</string>
+    <string-array name="line_spacing_entries">
+        <item>@string/line_spacing_02</item>
+        <item>@string/line_spacing_04</item>
+        <item>@string/line_spacing_06</item>
+        <item>@string/line_spacing_08</item>
+        <item>@string/line_spacing_10</item>
+    </string-array>
+    <string-array name="line_spacing_entry_values">
+        <item>0.2</item>
+        <item>0.4</item>
+        <item>0.6</item>
+        <item>0.8</item>
+        <item>1.0</item>
+    </string-array>
+
+    <!-- Font Size -->
+    <string name="pref_key_font_size" translatable="false">font_size</string>
+    <string name="pref_default_font_size">18</string>
+    <string-array name="font_size_entries">
+        <item>@string/font_size_extra_small</item>
+        <item>@string/font_size_small</item>
+        <item>@string/font_size_medium</item>
+        <item>@string/font_size_large</item>
+        <item>@string/font_size_extra_large</item>
+    </string-array>
+    <string-array name="font_size_entry_values">
+        <item>12</item>
+        <item>14</item>
+        <item>18</item>
+        <item>22</item>
+        <item>26</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,49 @@
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/common_spacing_m"
+        tools:context=".fragment.NovelSearchFragment">
+
+    <EditText
+            android:id="@+id/field_keyword"
+            style="@style/Widget.AppCompat.SearchView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:paddingLeft="@dimen/common_spacing_m"
+            android:paddingRight="@dimen/common_spacing_m"
+            android:hint="@string/hint_keyword"
+            />
+
+    <Spinner
+            android:id="@+id/spinner_genre"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <Spinner
+            android:id="@+id/spinner_sort"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/search_sort_entries"
+            />
+    <Spinner
+            android:id="@+id/spinner_order"
+            style="@style/Widget.AppCompat.Spinner.Underlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/search_order_entries"
+            />
+    <Button
+            android:id="@+id/button_search"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:drawableLeft="@drawable/ic_action_action_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/search"
+            />
+</LinearLayout>

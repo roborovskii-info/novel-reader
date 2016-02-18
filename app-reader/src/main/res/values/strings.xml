@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">NovelReader</string>
+    <string name="app_name_full">Novel Reader</string>
+    <string name="find_novel">小説を探す</string>
+    <string name="read_novel">マイライブラリ</string>
+    <string name="update_date">更新日時</string>
+    <string name="page_count">ページ数</string>
+    <string name="view_count">閲覧数</string>
+    <string name="review_count">評価数</string>
+    <string name="rating_average">評価</string>
+    <string name="novel_caption">あらすじ</string>
+    <string name="download">ダウンロード</string>
+    <string name="read">読む</string>
+    <string name="search">検索</string>
+    <string name="settings">設定</string>
+    <string name="about">このアプリについて</string>
+    <string name="version">Version %s</string>
+    <string name="remove">削除</string>
+    <string name="share">共有</string>
+    <string name="all">すべて</string>
+    <string name="open_in_browser">ブラウザで開く</string>
+    <string name="chapter_list">チャプターリスト</string>
+    <string name="ascending_order">昇順</string>
+    <string name="descending_order">降順</string>
+    <string name="search_result">「%s」の検索結果</string>
+
+    <string name="hint_keyword">キーワード</string>
+
+    <string name="status_complete">完</string>
+
+    <string name="rating_format">★ %1$s</string>
+    <string name="page_unit">p.%1$d</string>
+    <string name="page_progress_format">%1$d / %2$d</string>
+
+    <string name="pref_title_line_spacing">行間の間隔</string>
+    <string name="pref_title_font_size">フォントのサイズ</string>
+    <string name="pref_title_theme">テーマ</string>
+    <string name="pref_title_show_all_content">すべてのコンテンツを表示</string>
+
+    <string name="error_novel_not_found">指定された小説が見つかりません</string>
+    <string name="warn_novel_list_empty">表示する小説がありません。</string>
+    <string name="warn_genre_list_empty">ジャンルデータがありません。</string>
+
+    <string name="theme_light">ホワイト</string>
+    <string name="theme_dark">ブラック</string>
+
+    <string name="label_sort_new_arrival">新着</string>
+    <string name="label_sort_daily_ranking">デイリー</string>
+    <string name="label_sort_weekly_ranking">週間</string>
+    <string name="label_sort_total_ranking">総合</string>
+    <string name="label_sort_hall_of_fame">殿堂入り</string>
+    <string name="label_sort_rating_ranking">評価数</string>
+    <string name="label_sort_bookmark_ranking">しおり数</string>
+    <string name="label_sort_review_ranking">感想数</string>
+
+    <string name="notification_download_file_error">ファイルが破損しています。</string>
+    <string name="notification_download_failed">ダウンロードに失敗しました。</string>
+    <string name="notification_download_success">ダウンロードが完了しました。</string>
+    <string name="notification_download_running">ダウンロードしています。</string>
+    <string name="notification_download_pending">ダウンロード待機中。</string>
+    <string name="notification_download_providing">データを準備しています。</string>
+
+    <string name="line_spacing_02">0.2行</string>
+    <string name="line_spacing_04">0.4行</string>
+    <string name="line_spacing_06">0.6行</string>
+    <string name="line_spacing_08">0.8行</string>
+    <string name="line_spacing_10">1.0行</string>
+
+    <!-- Font Size -->
+    <string name="font_size_extra_large">特大</string>
+    <string name="font_size_large">大</string>
+    <string name="font_size_medium">中</string>
+    <string name="font_size_small">小</string>
+    <string name="font_size_extra_small">特小</string>
+</resources>
