@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckBoxPreference
-            android:key="@string/pref_key_show_all_content"
-            android:title="@string/pref_title_show_all_content"
-            />
+    <!--    <CheckBoxPreference
+                android:key="@string/pref_key_show_all_content"
+                android:title="@string/pref_title_show_all_content"
+                />-->
 
-    <ListPreference
-            android:key="@string/pref_key_theme"
-            android:entries="@array/theme_entries"
-            android:entryValues="@array/theme_entry_values"
-            android:defaultValue="@string/theme_value_light"
-            android:title="@string/pref_title_theme"
-            />
+    <PreferenceCategory
+            android:title="@string/pref_category_viewer">
+        <ListPreference
+                android:key="@string/pref_key_theme"
+                android:entries="@array/theme_entries"
+                android:entryValues="@array/theme_entry_values"
+                android:defaultValue="@string/theme_value_light"
+                android:title="@string/pref_title_theme"
+                />
 
-    <ListPreference
-            android:key="@string/pref_key_font_size"
-            android:entries="@array/font_size_entries"
-            android:entryValues="@array/font_size_entry_values"
-            android:defaultValue="@string/pref_default_font_size"
-            android:title="@string/pref_title_font_size"
-            />
+        <ListPreference
+                android:key="@string/pref_key_font_size"
+                android:entries="@array/font_size_entries"
+                android:entryValues="@array/font_size_entry_values"
+                android:defaultValue="@string/pref_default_font_size"
+                android:title="@string/pref_title_font_size"
+                />
 
-    <ListPreference
-            android:key="@string/pref_key_line_spacing"
-            android:entries="@array/line_spacing_entries"
-            android:entryValues="@array/line_spacing_entry_values"
-            android:defaultValue="@string/pref_default_line_spacing"
-            android:title="@string/pref_title_line_spacing"
-            />
+        <ListPreference
+                android:key="@string/pref_key_line_spacing"
+                android:entries="@array/line_spacing_entries"
+                android:entryValues="@array/line_spacing_entry_values"
+                android:defaultValue="@string/pref_default_line_spacing"
+                android:title="@string/pref_title_line_spacing"
+                />
+    </PreferenceCategory>
 </PreferenceScreen>

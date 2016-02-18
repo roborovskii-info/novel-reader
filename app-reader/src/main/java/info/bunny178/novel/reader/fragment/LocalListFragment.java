@@ -79,7 +79,6 @@ public class LocalListFragment extends Fragment {
 
         mSelectedNovel = (Novel) o;
         android.view.MenuInflater inflater = getActivity().getMenuInflater();
-        menu.setHeaderTitle(mSelectedNovel.getTitle());
         inflater.inflate(R.menu.context_local_list, menu);
     }
 

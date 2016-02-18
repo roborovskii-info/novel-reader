@@ -14,13 +14,14 @@
             android:layout_height="match_parent"
             />
 
+    <!-- ページ表示のトースト -->
     <TextView
             android:id="@+id/text_page_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/page_progress_format"
             android:textAppearance="?android:textAppearanceMedium"
-            android:background="@color/accent"
+            android:background="@drawable/round_rect"
             android:textColor="@color/white"
             android:layout_marginBottom="@dimen/common_spacing_m"
             android:layout_above="@+id/container_footer"
@@ -31,6 +32,7 @@
             android:paddingRight="@dimen/common_spacing_m"
             />
 
+    <!-- シークバー入りのフッター -->
     <FrameLayout
             android:id="@+id/container_footer"
             android:layout_width="match_parent"

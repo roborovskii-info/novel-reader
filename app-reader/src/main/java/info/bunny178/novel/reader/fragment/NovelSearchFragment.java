@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,8 +50,8 @@ public class NovelSearchFragment extends Fragment {
     private Spinner mOrderSpinner;
 
     public static NovelSearchFragment newInstance() {
-        NovelSearchFragment fragment = new NovelSearchFragment();
-        return fragment;
+//        NovelSearchFragment fragment = new NovelSearchFragment();
+        return new NovelSearchFragment();
     }
 
     @Nullable
@@ -109,7 +110,7 @@ public class NovelSearchFragment extends Fragment {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-
+                    Toast.makeText(getActivity(), R.string.error_network_error, Toast.LENGTH_SHORT).show();
                 }
             });
         }

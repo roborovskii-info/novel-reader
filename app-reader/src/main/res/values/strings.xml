@@ -32,12 +32,15 @@
     <string name="page_unit">p.%1$d</string>
     <string name="page_progress_format">%1$d / %2$d</string>
 
+    <string name="pref_category_viewer">閲覧設定</string>
+
     <string name="pref_title_line_spacing">行間の間隔</string>
     <string name="pref_title_font_size">フォントのサイズ</string>
     <string name="pref_title_theme">テーマ</string>
     <string name="pref_title_show_all_content">すべてのコンテンツを表示</string>
 
     <string name="error_novel_not_found">指定された小説が見つかりません</string>
+    <string name="error_network_error">ネットワークエラーが発生しました</string>
     <string name="warn_novel_list_empty">表示する小説がありません。</string>
     <string name="warn_genre_list_empty">ジャンルデータがありません。</string>
 
