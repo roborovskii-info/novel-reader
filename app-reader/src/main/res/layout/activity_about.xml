@@ -4,15 +4,19 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/common_spacing_m"
         android:orientation="vertical"
         tools:context="info.bunny178.fragment.AboutFragment">
+
+    <include
+            layout="@layout/toolbar"
+            />
 
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="?android:attr/listPreferredItemHeight"
+            android:padding="@dimen/common_spacing_m"
             android:gravity="center_vertical">
 
         <ImageView
@@ -49,7 +53,8 @@
                 android:id="@+id/text_about"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:padding="@dimen/common_spacing_m"
                 android:autoLink="web"
                 />
     </ScrollView>

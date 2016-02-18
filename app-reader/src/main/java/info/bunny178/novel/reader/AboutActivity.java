@@ -1,12 +1,13 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,21 +23,20 @@ import info.bunny178.novel.reader.R;
 /**
  * @author ISHIMARU Sohei on 2015/09/15.
  */
-public class AboutFragment extends Fragment {
+public class AboutActivity extends AppCompatActivity {
 
-    public static AboutFragment newInstance() {
-        return new AboutFragment();
-    }
-
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View parent = inflater.inflate(R.layout.fragment_about, container, false);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about);
 
-        TextView versionView = (TextView) parent.findViewById(R.id.text_version);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        TextView versionView = (TextView) findViewById(R.id.text_version);
         versionView.setText(String.format(getString(R.string.version), getVersionName()));
 
-        TextView licenseView = (TextView) parent.findViewById(R.id.text_about);
+        TextView licenseView = (TextView) findViewById(R.id.text_about);
 
         try {
             licenseView.setText(readFromRaw(R.raw.licenses));
@@ -44,11 +44,10 @@ public class AboutFragment extends Fragment {
             e.printStackTrace();
             licenseView.setText(e.getLocalizedMessage());
         }
-        return parent;
     }
 
     private String readFromRaw(int resId) throws IOException {
-        InputStream is = getActivity().getResources().openRawResource(resId);
+        InputStream is = getResources().openRawResource(resId);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
         StringBuilder sb = new StringBuilder();
@@ -64,10 +63,9 @@ public class AboutFragment extends Fragment {
 
     private String getVersionName() {
         StringBuilder versionName = new StringBuilder();
-        Activity activity = getActivity();
         try {
-            PackageManager pm = activity.getPackageManager();
-            PackageInfo pi = pm.getPackageInfo(activity.getPackageName(), PackageManager.GET_META_DATA);
+            PackageManager pm = getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
             versionName.append(pi.versionName).append("(").append(pi.versionCode).append(")");
         } catch (PackageManager.NameNotFoundException e) {
             versionName.append("unknown");
