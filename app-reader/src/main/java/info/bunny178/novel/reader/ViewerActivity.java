@@ -26,10 +26,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import info.bunny178.novel.reader.db.ChapterDao;
-import info.bunny178.novel.reader.db.NovelDao;
 import info.bunny178.novel.reader.db.NovelTable;
-import info.bunny178.novel.reader.db.PageDao;
 import info.bunny178.novel.reader.fragment.AboutFragment;
 import info.bunny178.novel.reader.fragment.ChapterListFragment;
 import info.bunny178.novel.reader.fragment.ImageViewerFragment;
@@ -95,7 +92,7 @@ public class ViewerActivity extends BaseActivity {
 
         int novelId = getIntent().getIntExtra(EXTRA_NOVEL_ID, -1);
         if (0 < novelId) {
-            mNovel = NovelDao.loadNovel(this, novelId);
+            mNovel = Novel.loadNovel(this, novelId);
             if (mNovel != null) {
                 setTitle(mNovel.getTitle());
             }
@@ -395,7 +392,7 @@ public class ViewerActivity extends BaseActivity {
             Page page = mPageCache.get(pageNumber);
             if (page == null) {
                 Log.v(LOG_TAG, "  Load from DB at " + position);
-                page = PageDao.loadPage(ViewerActivity.this, mNovel.getNovelId(), pageNumber);
+                page = Page.loadPage(ViewerActivity.this, mNovel.getNovelId(), pageNumber);
             } else {
                 Log.v(LOG_TAG, "  Page cache hit ! " + position);
             }
@@ -405,7 +402,7 @@ public class ViewerActivity extends BaseActivity {
                 TextView chapterView = (TextView) pageRow.findViewById(R.id.text_chapter);
                 String chapterTitle = mChapterCache.get(page.getChapterId());
                 if (TextUtils.isEmpty(chapterTitle)) {
-                    Chapter chapter = ChapterDao.loadChapter(ViewerActivity.this, page.getChapterId());
+                    Chapter chapter = Chapter.load(ViewerActivity.this, page.getChapterId());
                     if (chapter != null) {
                         chapterTitle = chapter.toString();
                         mChapterCache.put(page.getChapterId(), chapterTitle);

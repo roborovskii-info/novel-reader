@@ -4,9 +4,13 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.bunny178.novel.reader.db.ChapterTable;
@@ -15,7 +19,7 @@ import info.bunny178.novel.reader.db.ChapterTable;
  * @author ISHIMARU Sohei on 2015/09/18.
  */
 @Root(name = "chapter")
-public class Chapter extends BaseModel implements ChapterTable.Columns{
+public class Chapter extends BaseModel implements ChapterTable.Columns {
 
     private int mChapterId;
 
@@ -27,6 +31,7 @@ public class Chapter extends BaseModel implements ChapterTable.Columns{
 
     @Element(name = "title")
     private String mChapterTitle;
+
     @ElementList(name = "pages")
     private List<Page> mPageList;
 
@@ -36,6 +41,67 @@ public class Chapter extends BaseModel implements ChapterTable.Columns{
 
     public Chapter(Cursor cursor) {
         fromCursor(cursor);
+    }
+
+    public int save(Context context) {
+        ContentResolver resolver = context.getContentResolver();
+        String where = ChapterTable.Columns.CHAPTER_ID + " = " + mChapterId;
+        int count = resolver.update(ChapterTable.CONTENT_URI, toContentValues(), where, null);
+        if (count == 0) {
+            Uri uri = resolver.insert(ChapterTable.CONTENT_URI, toContentValues());
+            if (uri != null) {
+                mChapterId = Integer.parseInt(uri.getLastPathSegment());
+            }
+        }
+        return mChapterId;
+    }
+
+    public static Chapter load(Context context, int chapterId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = ChapterTable.CONTENT_URI;
+        String where = ChapterTable.Columns.CHAPTER_ID + " = " + chapterId;
+        Cursor c = null;
+        try {
+            c = resolver.query(uri, null, where, null, null);
+            if (c != null && c.moveToFirst()) {
+                return new Chapter(c);
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return null;
+    }
+
+    public static int deleteChapters(Context context, int novelId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = ChapterTable.CONTENT_URI;
+        String where = ChapterTable.Columns.NOVEL_ID + " = " + novelId;
+
+        return resolver.delete(uri, where, null);
+    }
+
+    public static List<Chapter> loadChapters(Context context, int novelId) {
+        List<Chapter> chapterList = new ArrayList<>();
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = ChapterTable.CONTENT_URI;
+        Cursor c = null;
+        try {
+            String where = ChapterTable.Columns.NOVEL_ID + " = " + novelId;
+            String sortOrder = ChapterTable.Columns.CHAPTER_NUMBER + " ASC";
+            c = resolver.query(uri, null, where, null, sortOrder);
+            if (c != null && c.moveToFirst()) {
+                do {
+                    chapterList.add(new Chapter(c));
+                } while (c.moveToNext());
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return chapterList;
     }
 
     public int getChapterId() {

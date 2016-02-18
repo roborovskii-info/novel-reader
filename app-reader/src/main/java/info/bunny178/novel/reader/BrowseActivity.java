@@ -1,32 +1,26 @@
 package info.bunny178.novel.reader;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
-import info.bunny178.novel.reader.db.NovelDao;
 import info.bunny178.novel.reader.fragment.AboutFragment;
-import info.bunny178.novel.reader.fragment.GenreListFragment;
 import info.bunny178.novel.reader.fragment.LocalListFragment;
 import info.bunny178.novel.reader.fragment.NovelPagerFragment;
 import info.bunny178.novel.reader.fragment.NovelSearchFragment;
 import info.bunny178.novel.reader.fragment.SettingsFragment;
+import info.bunny178.novel.reader.model.Novel;
 
 /**
  *
@@ -62,12 +56,12 @@ public class BrowseActivity extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
         }
         if (savedInstanceState == null) {
-            if (NovelDao.loadNovels(this, null).isEmpty()) {
-                attachNovelList();
-                setTitle(R.string.find_novel);
-            } else {
+            if (Novel.hasAnyNovel(this)) {
                 attachLocalList();
                 setTitle(R.string.read_novel);
+            } else {
+                attachNovelList();
+                setTitle(R.string.find_novel);
             }
         }
     }

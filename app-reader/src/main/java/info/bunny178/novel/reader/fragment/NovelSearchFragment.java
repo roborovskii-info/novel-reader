@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.List;
 
 import info.bunny178.novel.reader.R;
-import info.bunny178.novel.reader.db.GenreDao;
 import info.bunny178.novel.reader.model.Genre;
 import info.bunny178.novel.reader.net.GenreListRequest;
 import info.bunny178.novel.reader.net.GenreListResponse;
@@ -65,7 +64,7 @@ public class NovelSearchFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        List<Genre> genres = GenreDao.loadGenres(getActivity());
+        List<Genre> genres = Genre.loadGenres(getActivity());
         if (genres == null || genres.isEmpty()) {
             requestGenre();
         } else {
@@ -124,7 +123,7 @@ public class NovelSearchFragment extends Fragment {
             Serializer serializer = new Persister();
             try {
                 final GenreListResponse list = serializer.read(GenreListResponse.class, xml);
-                GenreDao.saveGenres(getActivity(), list.getGenreList());
+                Genre.saveGenres(getActivity(), list.getGenreList());
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {

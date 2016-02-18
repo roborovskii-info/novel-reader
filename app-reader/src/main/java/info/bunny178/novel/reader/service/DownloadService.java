@@ -31,13 +31,10 @@ import java.util.Locale;
 import java.util.zip.GZIPInputStream;
 
 import info.bunny178.novel.reader.R;
-import info.bunny178.novel.reader.db.ChapterDao;
 import info.bunny178.novel.reader.db.NovelTable;
-import info.bunny178.novel.reader.db.PageDao;
 import info.bunny178.novel.reader.model.Chapter;
 import info.bunny178.novel.reader.model.DownloadData;
 import info.bunny178.novel.reader.model.Novel;
-import info.bunny178.novel.reader.db.NovelDao;
 import info.bunny178.novel.reader.model.Page;
 import info.bunny178.util.DateFormatTransformer;
 
@@ -84,7 +81,7 @@ public class DownloadService extends IntentService {
         }
         mReceiver = extras.getParcelable(EXTRA_RECEIVER);
         int novelId = extras.getInt(EXTRA_NOVEL_ID);
-        Novel novel = NovelDao.loadNovel(this, novelId);
+        Novel novel = Novel.loadNovel(this, novelId);
         if (novel == null) {
             Log.e(LOG_TAG, "  Novel data not found. Novel id - " + novelId);
             return;
@@ -137,8 +134,8 @@ public class DownloadService extends IntentService {
     }
 
     private void cleanUpNovel(int novelId) {
-        ChapterDao.deleteChapters(this, novelId);
-        PageDao.deletePages(this, novelId);
+        Chapter.deleteChapters(this, novelId);
+        Page.deletePages(this, novelId);
     }
 
     private void parseText(String path, int novelId) {
@@ -159,7 +156,7 @@ public class DownloadService extends IntentService {
                     chapter.setChapterNumber(chapterNumber);
                     chapter.setPageNumber(pageNumber + 1);
 
-                    int chapterId = ChapterDao.saveChapter(this, chapter);
+                    int chapterId = chapter.save(this);
                     Log.d(LOG_TAG, chapter.toString());
                     List<Page> pages = chapter.getPageList();
                     if (pages != null) {
@@ -169,7 +166,7 @@ public class DownloadService extends IntentService {
                             page.setChapterId(chapterId);
                             pageNumber = page.getPageNumber();
                         }
-                        PageDao.savePages(this, pages);
+                        Page.savePages(this, pages);
                     }
                     chapterNumber++;
                 }

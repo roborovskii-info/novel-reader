@@ -19,11 +19,10 @@ import java.util.List;
 
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.ViewerActivity;
-import info.bunny178.novel.reader.db.ChapterDao;
-import info.bunny178.novel.reader.db.NovelDao;
 import info.bunny178.novel.reader.db.NovelTable;
-import info.bunny178.novel.reader.db.PageDao;
+import info.bunny178.novel.reader.model.Chapter;
 import info.bunny178.novel.reader.model.Novel;
+import info.bunny178.novel.reader.model.Page;
 import info.bunny178.novel.reader.view.adapter.LocalListAdapter;
 
 /**
@@ -110,7 +109,7 @@ public class LocalListFragment extends Fragment {
             mAdapter.clear();
         }
         String where = NovelTable.Columns.DOWNLOAD_DATE + " != 0";
-        List<Novel> novelList = NovelDao.loadNovels(getActivity(), where);
+        List<Novel> novelList = Novel.loadNovels(getActivity(), where);
         mAdapter.addAll(novelList);
         mAdapter.notifyDataSetChanged();
 
@@ -126,7 +125,7 @@ public class LocalListFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Novel data = (Novel) mAdapter.getItem(position);
             if (data != null) {
-                int novelId = NovelDao.saveNovel(getActivity(), data);
+                int novelId = data.save(getActivity());
                 startNovelDetailActivity(novelId);
             }
         }
@@ -139,9 +138,9 @@ public class LocalListFragment extends Fragment {
     }
 
     private void deleteNovel(int novelId) {
-        NovelDao.deleteNovel(getActivity(), novelId);
-        ChapterDao.deleteChapters(getActivity(), novelId);
-        PageDao.deletePages(getActivity(), novelId);
+        Novel.deleteNovel(getActivity(), novelId);
+        Chapter.deleteChapters(getActivity(), novelId);
+        Page.deletePages(getActivity(), novelId);
     }
 
     private void openBrowser(Novel novel) {

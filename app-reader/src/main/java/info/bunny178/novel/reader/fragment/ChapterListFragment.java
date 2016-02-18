@@ -3,11 +3,8 @@ package info.bunny178.novel.reader.fragment;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +16,6 @@ import android.widget.ProgressBar;
 import java.util.List;
 
 import info.bunny178.novel.reader.R;
-import info.bunny178.novel.reader.db.ChapterDao;
-import info.bunny178.novel.reader.db.NovelDao;
 import info.bunny178.novel.reader.model.Chapter;
 import info.bunny178.novel.reader.model.Novel;
 import info.bunny178.novel.reader.view.adapter.ChapterListAdapter;
@@ -74,12 +69,12 @@ public class ChapterListFragment extends Fragment {
 
         int novelId = getArguments().getInt(ARGS_NOVEL_ID);
 
-        Novel novel = NovelDao.loadNovel(getActivity(), novelId);
+        Novel novel = Novel.loadNovel(getActivity(), novelId);
         if (novel != null) {
             getActivity().setTitle(novel.getTitle());
         }
 
-        List<Chapter> chapterList = ChapterDao.loadChapters(getActivity(), novelId);
+        List<Chapter> chapterList = Chapter.loadChapters(getActivity(), novelId);
         mAdapter.addAll(chapterList);
 
         ListView listView = (ListView) view.findViewById(R.id.list_chapter);

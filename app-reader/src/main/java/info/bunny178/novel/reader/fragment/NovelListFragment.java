@@ -38,7 +38,7 @@ import java.util.Locale;
 import info.bunny178.novel.reader.DetailActivity;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Novel;
-import info.bunny178.novel.reader.db.NovelDao;
+
 import info.bunny178.novel.reader.net.NovelListResponse;
 import info.bunny178.novel.reader.net.NovelListRequest;
 import info.bunny178.novel.reader.net.NovelSearchRequest;
@@ -328,7 +328,7 @@ public class NovelListFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Novel data = (Novel) mAdapter.getItem(position);
             if (data != null) {
-                int novelId = NovelDao.saveNovel(getActivity(), data);
+                int novelId = data.save(getActivity());
                 startNovelDetailActivity(novelId);
             }
         }

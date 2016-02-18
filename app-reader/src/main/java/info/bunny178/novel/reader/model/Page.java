@@ -3,10 +3,15 @@ package info.bunny178.novel.reader.model;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import info.bunny178.novel.reader.db.PageTable;
 
@@ -40,6 +45,82 @@ public class Page extends BaseModel implements PageTable.Columns{
 
     public Page(Cursor cursor) {
         fromCursor(cursor);
+    }
+
+    public int save(Context context) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = PageTable.CONTENT_URI.buildUpon().appendPath(Integer.toString(mPageId)).build();
+        int count = resolver.update(uri, toContentValues(), null, null);
+        if (count == 0) {
+            uri = resolver.insert(PageTable.CONTENT_URI, toContentValues());
+            if (uri != null) {
+                mPageId = Integer.parseInt(uri.getLastPathSegment());
+            }
+        }
+        return mPageId;
+    }
+
+    public static boolean hasPages(Context context, int novelId) {
+        List<Page> pageList = loadPages(context, novelId);
+        return 0 < pageList.size();
+    }
+
+    public static int savePages(Context context, List<Page> pages) {
+        ContentResolver resolver = context.getContentResolver();
+        int size = pages.size();
+        ContentValues[] valuesArray = new ContentValues[size];
+        for (int i = 0; i < size; i++) {
+            valuesArray[i] = pages.get(i).toContentValues();
+        }
+        return resolver.bulkInsert(PageTable.CONTENT_URI, valuesArray);
+    }
+
+    public static int deletePages(Context context, int novelId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = PageTable.CONTENT_URI;
+        String where = NOVEL_ID + " = " + novelId;
+
+        return resolver.delete(uri, where, null);
+    }
+
+    public static List<Page> loadPages(Context context, int novelId) {
+        List<Page> pageList = new ArrayList<>();
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = PageTable.CONTENT_URI;
+        Cursor c = null;
+        try {
+            String where = NOVEL_ID + " = " + novelId;
+            String sortOrder = PAGE_NUMBER + " ASC";
+            c = resolver.query(uri, null, where, null, sortOrder);
+            if (c != null && c.moveToFirst()) {
+                do {
+                    pageList.add(new Page(c));
+                } while (c.moveToNext());
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return pageList;
+    }
+
+    public static Page loadPage(Context context, int novelId, int pageNumber) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = PageTable.CONTENT_URI;
+        String where = PAGE_NUMBER + " = " + pageNumber + " AND " + NOVEL_ID + " = " + novelId;
+        Cursor c = null;
+        try {
+            c = resolver.query(uri, null, where, null, null);
+            if (c != null && c.moveToFirst()) {
+                return new Page(c);
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return null;
     }
 
     public int getPageId() {

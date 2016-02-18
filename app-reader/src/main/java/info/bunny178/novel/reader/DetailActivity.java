@@ -24,9 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import info.bunny178.novel.reader.db.PageDao;
+
 import info.bunny178.novel.reader.model.Novel;
-import info.bunny178.novel.reader.db.NovelDao;
+
 import info.bunny178.novel.reader.service.DownloadService;
 
 public class DetailActivity extends AppCompatActivity {
@@ -73,7 +73,7 @@ public class DetailActivity extends AppCompatActivity {
         }
         /* IDから小説データを読み込み */
         mNovelId = args.getInt(EXTRA_NOVEL_ID);
-        mNovelData = NovelDao.loadNovel(this, mNovelId);
+        mNovelData = Novel.loadNovel(this, mNovelId);
         if (mNovelData == null) {
             Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
             finish();
@@ -149,7 +149,7 @@ public class DetailActivity extends AppCompatActivity {
                 mProgressView.setVisibility(View.INVISIBLE);
                 mDownloadButton.setText(R.string.read);
                 mDownloadButton.setEnabled(true);
-                mNovelData = NovelDao.loadNovel(this, mNovelId);
+                mNovelData = Novel.loadNovel(this, mNovelId);
                 break;
             case DownloadService.STATUS_INIT:
                 /* 未ダウンロード */

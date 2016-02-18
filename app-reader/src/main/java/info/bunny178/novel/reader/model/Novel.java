@@ -3,15 +3,19 @@ package info.bunny178.novel.reader.model;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import info.bunny178.novel.reader.db.NovelTable;
@@ -96,6 +100,86 @@ public class Novel extends BaseModel implements NovelTable.Columns {
 
     public Novel(Cursor cursor) {
         fromCursor(cursor);
+    }
+
+    public int save(Context context) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = NovelTable.CONTENT_URI.buildUpon().appendPath(Integer.toString(mNovelId)).build();
+        int count = resolver.update(uri, toContentValues(), null, null);
+        if (count == 0) {
+            uri = resolver.insert(NovelTable.CONTENT_URI, toContentValues());
+            if (uri != null) {
+                mNovelId = Integer.parseInt(uri.getLastPathSegment());
+            }
+        }
+        return mNovelId;
+    }
+
+    public static boolean hasAnyNovel(Context context) {
+        boolean hasNovel = false;
+        ContentResolver resolver = context.getContentResolver();
+        Cursor c = null;
+        try {
+            c = resolver.query(NovelTable.CONTENT_URI, null, null, null, null);
+            if (c != null && 0 < c.getCount()) {
+                hasNovel = true;
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return hasNovel;
+    }
+
+    public static boolean hasNovel(Context context, int novelId) {
+        Novel novel = loadNovel(context, novelId);
+        return novel != null;
+    }
+
+    public static Novel loadNovel(Context context, int novelId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = NovelTable.CONTENT_URI.buildUpon().appendPath(Integer.toString(novelId)).build();
+        Cursor c = null;
+
+        try {
+            c = resolver.query(uri, null, null, null, null);
+            if (c != null && c.moveToFirst()) {
+                return new Novel(c);
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return null;
+    }
+
+    public static List<Novel> loadNovels(Context context, String where) {
+        List<Novel> novelList = new ArrayList<>();
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = NovelTable.CONTENT_URI;
+        Cursor c = null;
+
+        try {
+            c = resolver.query(uri, null, where, null, null);
+            if (c != null && c.moveToFirst()) {
+                do {
+                    novelList.add(new Novel(c));
+                } while (c.moveToNext());
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return novelList;
+    }
+
+    public static int deleteNovel(Context context, int novelId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = NovelTable.CONTENT_URI.buildUpon().appendPath(Integer.toString(novelId)).build();
+        return resolver.delete(uri, null, null);
     }
 
     public String getLocalizedUpdateDate(Context context) {
