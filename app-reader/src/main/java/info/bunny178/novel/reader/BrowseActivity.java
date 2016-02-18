@@ -97,9 +97,6 @@ public class BrowseActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-            case R.id.menu_about:
-                startAboutActivity();
-                return true;
             case R.id.menu_search:
                 startSearchActivity();
                 return true;
@@ -133,11 +130,6 @@ public class BrowseActivity extends AppCompatActivity {
     private void startSettingsActivity() {
         Intent intent = new Intent(this, SingleFragmentActivity.class);
         intent.putExtra(SingleFragmentActivity.EXTRA_FRAGMENT_NAME, SettingsFragment.class.getCanonicalName());
-        startActivity(intent);
-    }
-
-    private void startAboutActivity() {
-        Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 

@@ -32,4 +32,12 @@
                 android:title="@string/pref_title_line_spacing"
                 />
     </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/pref_category_other">
+        <Preference android:title="@string/pref_title_about">
+            <intent
+                    android:targetPackage="info.bunny178.novel.reader"
+                    android:targetClass="info.bunny178.novel.reader.AboutActivity" />
+        </Preference>
+    </PreferenceCategory>
 </PreferenceScreen>

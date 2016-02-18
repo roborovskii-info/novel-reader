@@ -181,13 +181,14 @@ public class ViewerActivity extends BaseActivity {
         switch (itemId) {
             case R.id.menu_chapter_list:
                 attachChapterListFragment();
-                break;
+                return true;
             case R.id.menu_settings:
                 startSettingsActivity();
                 return true;
-            case R.id.menu_about:
-                startAboutActivity();
+            case R.id.menu_show_details:
+                startDetailsActivity();
                 return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -205,8 +206,9 @@ public class ViewerActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    private void startAboutActivity() {
-        Intent intent = new Intent(this, AboutActivity.class);
+    private void startDetailsActivity() {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_NOVEL_ID, mNovel.getNovelId());
         startActivity(intent);
     }
 

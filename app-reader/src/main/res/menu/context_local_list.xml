@@ -8,4 +8,8 @@
             android:id="@+id/menu_open_in_browser"
             android:title="@string/open_in_browser"
             />
+    <item
+            android:id="@+id/menu_show_details"
+            android:title="@string/show_details"
+            />
 </menu>

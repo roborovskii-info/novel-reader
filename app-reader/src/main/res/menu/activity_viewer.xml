@@ -2,11 +2,18 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context=".MainActivity">
+        tools:context=".ViewerActivity">
     <item
             android:id="@+id/menu_chapter_list"
             android:title="@string/chapter_list"
             android:icon="@drawable/ic_action_action_view_list"
+            android:orderInCategory="100"
+            app:showAsAction="ifRoom"
+            />
+    <item
+            android:id="@+id/menu_show_details"
+            android:title="@string/show_details"
+            android:icon="@drawable/ic_action_action_info_outline"
             android:orderInCategory="100"
             app:showAsAction="ifRoom"
             />

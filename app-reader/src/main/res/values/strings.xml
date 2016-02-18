@@ -14,6 +14,7 @@
     <string name="search">検索</string>
     <string name="settings">設定</string>
     <string name="about">このアプリについて</string>
+
     <string name="version">Version %s</string>
     <string name="remove">削除</string>
     <string name="share">共有</string>
@@ -23,6 +24,7 @@
     <string name="ascending_order">昇順</string>
     <string name="descending_order">降順</string>
     <string name="search_result">「%s」の検索結果</string>
+    <string name="show_details">詳細を見る</string>
 
     <string name="hint_keyword">キーワード</string>
 
@@ -33,11 +35,13 @@
     <string name="page_progress_format">%1$d / %2$d</string>
 
     <string name="pref_category_viewer">閲覧設定</string>
+    <string name="pref_category_other">その他</string>
 
     <string name="pref_title_line_spacing">行間の間隔</string>
     <string name="pref_title_font_size">フォントのサイズ</string>
     <string name="pref_title_theme">テーマ</string>
     <string name="pref_title_show_all_content">すべてのコンテンツを表示</string>
+    <string name="pref_title_about">このアプリについて</string>
 
     <string name="error_novel_not_found">指定された小説が見つかりません</string>
     <string name="error_network_error">ネットワークエラーが発生しました</string>

@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import java.util.List;
 
+import info.bunny178.novel.reader.DetailActivity;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.ViewerActivity;
 import info.bunny178.novel.reader.db.NovelTable;
@@ -88,11 +89,14 @@ public class LocalListFragment extends Fragment {
         switch(itemId) {
             case R.id.menu_open_in_browser:
                 openBrowser(mSelectedNovel);
-                break;
+                return true;
             case R.id.menu_remove:
                 deleteNovel(mSelectedNovel.getNovelId());
                 createAdapter();
-                break;
+                return true;
+            case R.id.menu_show_details:
+                startDetailsActivity(mSelectedNovel.getNovelId());
+                return true;
         }
         return false;
     }
@@ -125,12 +129,18 @@ public class LocalListFragment extends Fragment {
             Novel data = (Novel) mAdapter.getItem(position);
             if (data != null) {
                 int novelId = data.save(getActivity());
-                startNovelDetailActivity(novelId);
+                startViewerActivity(novelId);
             }
         }
     };
 
-    private void startNovelDetailActivity(int novelId) {
+    private void startDetailsActivity(int novelId) {
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_NOVEL_ID, novelId);
+        startActivity(intent);
+    }
+
+    private void startViewerActivity(int novelId) {
         Intent intent = new Intent(getActivity(), ViewerActivity.class);
         intent.putExtra(ViewerActivity.EXTRA_NOVEL_ID, novelId);
         startActivity(intent);
