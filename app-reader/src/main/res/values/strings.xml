@@ -46,11 +46,13 @@
     <string name="pref_title_about">このアプリについて</string>
     <string name="pref_title_fab_position">スクロールボタンの位置</string>
 
+    <string name="info_delete_complete">削除しました</string>
     <string name="info_restart_please">テーマを反映するには、アプリを再起動する必要があります。</string>
     <string name="error_novel_not_found">指定された小説が見つかりません</string>
     <string name="error_network_error">ネットワークエラーが発生しました</string>
     <string name="warn_novel_list_empty">表示する小説がありません。</string>
     <string name="warn_genre_list_empty">ジャンルデータがありません。</string>
+    <string name="warn_delete_novel_confirm">小説のデータを削除します。</string>
 
     <string name="theme_light">ホワイト</string>
     <string name="theme_dark">ダーク</string>
