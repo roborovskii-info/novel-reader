@@ -32,7 +32,7 @@ public class NovelPagerFragment extends Fragment {
         View parent = inflater.inflate(R.layout.fragment_novel_pager, container, false);
 
         ViewPager viewPager = (ViewPager) parent.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new FragmentTabsAdapter(getChildFragmentManager(), getActivity()));
+        viewPager.setAdapter(new FragmentTabsAdapter(getFragmentManager(), getActivity()));
 
         TabLayout tabLayout = (TabLayout) parent.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager);

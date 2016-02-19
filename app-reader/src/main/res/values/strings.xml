@@ -9,7 +9,8 @@
     <string name="review_count">評価数</string>
     <string name="rating_average">評価</string>
     <string name="novel_caption">あらすじ</string>
-    <string name="download">ダウンロード</string>
+    <string name="download">ダウンロード</string>]
+    <string name="update">アップデート</string>
     <string name="read">読む</string>
     <string name="search">検索</string>
     <string name="settings">設定</string>
@@ -30,9 +31,10 @@
 
     <string name="status_complete">完</string>
 
-    <string name="rating_format">★ %1$s</string>
-    <string name="page_unit">p.%1$d</string>
-    <string name="page_progress_format">%1$d / %2$d</string>
+    <string name="author_format">%s</string>
+    <string name="rating_format">%1$s</string>
+    <string name="page_unit">%1$d ページ</string>
+    <string name="page_progress_format">%1$d / %2$d ページ</string>
 
     <string name="pref_category_viewer">閲覧設定</string>
     <string name="pref_category_other">その他</string>
@@ -42,14 +44,18 @@
     <string name="pref_title_theme">テーマ</string>
     <string name="pref_title_show_all_content">すべてのコンテンツを表示</string>
     <string name="pref_title_about">このアプリについて</string>
+    <string name="pref_title_fab_position">スクロールボタンの位置</string>
 
+    <string name="info_restart_please">テーマを反映するには、アプリを再起動する必要があります。</string>
     <string name="error_novel_not_found">指定された小説が見つかりません</string>
     <string name="error_network_error">ネットワークエラーが発生しました</string>
     <string name="warn_novel_list_empty">表示する小説がありません。</string>
     <string name="warn_genre_list_empty">ジャンルデータがありません。</string>
 
     <string name="theme_light">ホワイト</string>
-    <string name="theme_dark">ブラック</string>
+    <string name="theme_dark">ダーク</string>
+    <string name="theme_cute">キュート</string>
+    <string name="theme_cool">クール</string>
 
     <string name="label_sort_new_arrival">新着</string>
     <string name="label_sort_daily_ranking">デイリー</string>
@@ -66,6 +72,11 @@
     <string name="notification_download_running">ダウンロードしています。</string>
     <string name="notification_download_pending">ダウンロード待機中。</string>
     <string name="notification_download_providing">データを準備しています。</string>
+
+    <string name="position_left">左</string>
+    <string name="position_center">中</string>
+    <string name="position_right">右</string>
+    <string name="position_none">非表示</string>
 
     <string name="line_spacing_02">0.2行</string>
     <string name="line_spacing_04">0.4行</string>

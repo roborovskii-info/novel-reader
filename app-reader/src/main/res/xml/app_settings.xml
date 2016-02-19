@@ -12,7 +12,7 @@
                 android:key="@string/pref_key_theme"
                 android:entries="@array/theme_entries"
                 android:entryValues="@array/theme_entry_values"
-                android:defaultValue="@string/theme_value_light"
+                android:defaultValue="@string/theme_value_dark"
                 android:title="@string/pref_title_theme"
                 />
 

@@ -72,8 +72,8 @@ public class LocalListAdapter extends BaseAdapter {
             h.coverView = (ImageView) convertView.findViewById(R.id.image_cover);
             h.titleView = (TextView) convertView.findViewById(R.id.text_title);
             h.authorView = (TextView) convertView.findViewById(R.id.text_author);
-            h.genreView = (TextView) convertView.findViewById(R.id.text_genre);
-            h.ratingView = (TextView) convertView.findViewById(R.id.text_rating);
+            h.progressView = (TextView) convertView.findViewById(R.id.text_progress);
+            h.pageView = (TextView) convertView.findViewById(R.id.text_page);
             h.statusView = (TextView) convertView.findViewById(R.id.text_status);
             convertView.setTag(h);
         } else {
@@ -83,16 +83,24 @@ public class LocalListAdapter extends BaseAdapter {
         Novel data = mDataList.get(position);
         if (data != null) {
             h.titleView.setText(data.getTitle());
-            h.authorView.setText(data.getAuthorName());
-            h.genreView.setText(data.getGenreName());
+
+            String author = mContext.getString(R.string.author_format);
+            h.authorView.setText(String.format(author, data.getAuthorName()));
+
+            String pageBase = mContext.getString(R.string.page_progress_format);
+            int current = data.getReadIndex();
+            int total = data.getPageCount();
+
+            String pageCount = String.format(pageBase, current + 1, total);
+            h.pageView.setText(pageCount);
+
+            String progress = String.format("%.1f", (float) current / (float) total * 100.0f) + "%";
+            h.progressView.setText(progress);
 
             String url = data.getLargeImageUrl();
             if (Patterns.WEB_URL.matcher(url).matches()) {
                 Picasso.with(mContext).load(url).into(h.coverView);
             }
-
-            String ratingAvg = data.getRatingText();
-            h.ratingView.setText(String.format(mContext.getString(R.string.rating_format), ratingAvg));
 
             if (data.getNovelStatus() == Novel.STATUS_COMPLETE) {
                 h.statusView.setText(R.string.status_complete);
@@ -108,8 +116,8 @@ public class LocalListAdapter extends BaseAdapter {
         ImageView coverView;
         TextView titleView;
         TextView authorView;
-        TextView genreView;
-        TextView ratingView;
+        TextView progressView;
+        TextView pageView;
         TextView statusView;
     }
 }

@@ -6,6 +6,7 @@ import com.google.android.gms.ads.AdView;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
@@ -15,8 +16,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -34,7 +37,7 @@ import io.fabric.sdk.android.Fabric;
  * @author ISHIMARU Sohei on 2015/09/08.
  */
 
-public class BrowseActivity extends AppCompatActivity {
+public class BrowseActivity extends BaseActivity {
 
     private static final String LOG_TAG = "BrowseActivity";
 
@@ -106,6 +109,24 @@ public class BrowseActivity extends AppCompatActivity {
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(mNavigationListener);
+        View header = navigationView.inflateHeaderView(R.layout.navigation_header);
+
+        /* メニューのアイコンをアクセントカラーで塗りつぶす */
+        Menu menu = navigationView.getMenu();
+        int size = menu.size();
+
+        int accent = super.getAccentColor();
+        for (int i = 0; i < size; i++) {
+            MenuItem item = menu.getItem(i);
+            item.getIcon().setColorFilter(accent, PorterDuff.Mode.MULTIPLY);
+        }
+
+        int primary = super.getPrimaryColor();
+        if  (header != null) {
+            header.setBackgroundColor(primary);
+        } else {
+            Log.e(LOG_TAG, "  Header is null");
+        }
     }
 
     private void setupAds() {

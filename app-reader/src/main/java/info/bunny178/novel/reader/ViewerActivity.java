@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -80,6 +82,8 @@ public class ViewerActivity extends BaseActivity {
 
     private int mFontSize;
 
+    private String mFabPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +120,7 @@ public class ViewerActivity extends BaseActivity {
         mPageView = (TextView) findViewById(R.id.text_page_count);
         mFooterView = findViewById(R.id.container_footer);
         Drawable drawable = mToolbar.getBackground();
-        mFooterView.setBackgroundColor(((ColorDrawable)drawable).getColor());
+        mFooterView.setBackgroundColor(((ColorDrawable) drawable).getColor());
 
         mChapterCache = new LruCache<>(PAGE_CACHE_SIZE);
         mPageCache = new LruCache<>(PAGE_CACHE_SIZE);
@@ -126,6 +130,8 @@ public class ViewerActivity extends BaseActivity {
         /* 前回終了時のページポジションへ移動 */
         mCurrentPosition = mNovel.getReadIndex();
         mViewPager.setCurrentItem(mCurrentPosition, false);
+        mSeekBar.setProgress(mCurrentPosition);
+
         Log.d(LOG_TAG, "  Last page position : " + mCurrentPosition);
     }
 
@@ -237,6 +243,7 @@ public class ViewerActivity extends BaseActivity {
                 getString(R.string.pref_default_line_spacing)));
         mFontSize = Integer.parseInt(pp.readString(R.string.pref_key_font_size,
                 getString(R.string.pref_default_font_size)));
+        mFabPosition = pp.readString(R.string.pref_key_fab_position, getString(R.string.position_right));
     }
 
     private void setPageLabel() {
@@ -258,7 +265,6 @@ public class ViewerActivity extends BaseActivity {
             mCurrentPosition = position;
             mSeekBar.setProgress(position);
             setPageLabel();
-
         }
 
         @Override
@@ -362,6 +368,9 @@ public class ViewerActivity extends BaseActivity {
         }
     };
 
+    /**
+     * 最後に見ていたページを保存する
+     */
     private void savePagePosition() {
         ContentValues values = new ContentValues();
         values.put(NovelTable.Columns.READ_INDEX, mCurrentPosition);

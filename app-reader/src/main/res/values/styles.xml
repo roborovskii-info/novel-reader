@@ -5,38 +5,28 @@
 
     <style name="Theme.Bunny178.Dark" parent="Base.Theme.Bunny178.Dark" />
 
+    <style name="Theme.Bunny178.Cute" parent="Base.Theme.Bunny178.Cute" />
+
+    <style name="Theme.Bunny178.Cool" parent="Base.Theme.Bunny178.Cool" />
+
     <style name="Base.Theme.Bunny178" parent="@style/Theme.AppCompat.Light.NoActionBar">
-
-        <!-- Support material design -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="colorButtonNormal">@color/accent</item>
     </style>
-
     <style name="Base.Theme.Bunny178.Dark" parent="@style/Theme.AppCompat.NoActionBar">
-
-        <!-- Support material design -->
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="colorButtonNormal">@color/accent</item>
     </style>
-
-    <style name="Widget"/>
-    <style name="Widget.Bunny178"/>
-    <style name="Widget.Bunny178.Button"/>
-
-    <!-- Flat Buttons Style -->
-    <style name="Widget.Bunny178.Button.Flat" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
-        <item name="android:paddingLeft">@dimen/common_spacing_m</item>
-        <item name="android:paddingRight">@dimen/common_spacing_m</item>
-        <item name="android:textColor">@color/accent</item>
+    <style name="Base.Theme.Bunny178.Cute" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/cute_primary</item>
+        <item name="colorPrimaryDark">@color/cute_primary_dark</item>
+        <item name="colorAccent">@color/cute_accent</item>
     </style>
-
-    <!-- Raised Button Style -->
-    <style name="Widget.Bunny178.Button.Raised" parent="@style/Widget.AppCompat.Button">
-        <item name="android:textColor">?android:textColorPrimaryInverse</item>
+    <style name="Base.Theme.Bunny178.Cool" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/cool_primary</item>
+        <item name="colorPrimaryDark">@color/cool_primary_dark</item>
+        <item name="colorAccent">@color/cool_accent</item>
     </style>
-
 </resources>

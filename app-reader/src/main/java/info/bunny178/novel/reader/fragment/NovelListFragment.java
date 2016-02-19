@@ -328,7 +328,7 @@ public class NovelListFragment extends Fragment {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Novel data = (Novel) mAdapter.getItem(position);
             if (data != null) {
-                int novelId = data.save(getActivity());
+                int novelId = data.getNovelId();
                 startNovelDetailActivity(novelId);
             }
         }
@@ -339,7 +339,6 @@ public class NovelListFragment extends Fragment {
         intent.putExtra(DetailActivity.EXTRA_NOVEL_ID, novelId);
         startActivity(intent);
     }
-
 
     private boolean hasNextItem() {
         return (mPageNumber + 1) * ITEM_PER_PAGE < mTotalItem;

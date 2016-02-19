@@ -4,9 +4,11 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 
 /**
  * 指定されたFragmentのみをAttachするためのActivity.
@@ -14,7 +16,7 @@ import android.util.Log;
  *
  * @author ISHIMARU Sohei on 2015/04/06.
  */
-public class SingleFragmentActivity extends AppCompatActivity {
+public class SingleFragmentActivity extends BaseActivity {
 
     private static final String LOG_TAG = "SingleFragmentActivity";
 
@@ -29,6 +31,13 @@ public class SingleFragmentActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             attachFragment(extras);

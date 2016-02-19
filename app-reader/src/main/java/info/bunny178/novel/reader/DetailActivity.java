@@ -2,12 +2,17 @@ package info.bunny178.novel.reader;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import com.squareup.picasso.Picasso;
 
-import android.content.Context;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+import org.simpleframework.xml.transform.RegistryMatcher;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,19 +31,40 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import info.bunny178.novel.reader.model.Novel;
 
+import info.bunny178.novel.reader.net.NovelListRequest;
+import info.bunny178.novel.reader.net.NovelListResponse;
+import info.bunny178.novel.reader.net.RequestRunner;
 import info.bunny178.novel.reader.service.DownloadService;
+import info.bunny178.util.DateFormatTransformer;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends BaseActivity {
 
     private static final String LOG_TAG = "DetailActivity";
 
     public static final String EXTRA_NOVEL_ID = "novel_id";
+
+    private static final int STATUS_REQUESTING = 0;
+    private static final int STATUS_UPDATE = 600;
+    private static final int STATUS_NO_DATA = 100;
+    private static final int STATUS_PENDING = 190;
+    private static final int STATUS_RUNNING = 192;
+    private static final int STATUS_PROVIDING = 197;
+    private static final int STATUS_SUCCESS = 200;
+    private static final int STATUS_FILE_ERROR = 492;
 
     private Novel mNovelData;
 
@@ -47,7 +73,7 @@ public class DetailActivity extends AppCompatActivity {
     private InterstitialAd mInterstitialAd;
 
     private TextView mProgressView;
-
+    private ProgressBar mProgressBar;
     private Button mDownloadButton;
 
     private int[] sActionIds = {
@@ -67,7 +93,8 @@ public class DetailActivity extends AppCompatActivity {
         }
         mProgressView = (TextView) findViewById(R.id.text_progress);
         mDownloadButton = (Button) findViewById(R.id.btn_read);
-
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        setUi(STATUS_REQUESTING);
         setupAds();
     }
 
@@ -113,28 +140,7 @@ public class DetailActivity extends AppCompatActivity {
         }
         /* IDから小説データを読み込み */
         mNovelId = args.getInt(EXTRA_NOVEL_ID);
-        mNovelData = Novel.loadNovel(this, mNovelId);
-        if (mNovelData == null) {
-            Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-        /* カバー画像の表示 */
-        String url = mNovelData.getLargeImageUrl();
-        if (Patterns.WEB_URL.matcher(url).matches()) {
-            displayCoverImage(url);
-        } else {
-            Log.e(LOG_TAG, "  URL Not matches");
-        }
-        bindNovelData(mNovelData);
-
-        if (0 < mNovelData.getDownloadDate().getTime()) {
-            setUi(DownloadService.STATUS_SUCCESS);
-        } else {
-            mDownloadButton.setText(R.string.download);
-        }
-
-        setTitle(mNovelData.getTitle());
+        requestNovel(mNovelId);
     }
 
     @Override
@@ -157,6 +163,90 @@ public class DetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void handleNovelData() {
+        /* カバー画像の表示 */
+        String url = mNovelData.getLargeImageUrl();
+        if (Patterns.WEB_URL.matcher(url).matches()) {
+            displayCoverImage(url);
+        } else {
+            Log.e(LOG_TAG, "  URL Not matches");
+        }
+        bindNovelData(mNovelData);
+        Novel novelData = Novel.loadNovel(this, mNovelId);
+        if (novelData != null && 0 < novelData.getDownloadDate().getTime()) {
+            /* ダウンロードしてあった場合、アップデートチェック */
+            long local = novelData.getUpdateDate().getTime();
+            long server = mNovelData.getUpdateDate().getTime();
+            if (local < server) {
+                /* アップデートしろ表示 */
+                setUi(STATUS_UPDATE);
+            } else {
+                /* 最新でダウンロード済 */
+                setUi(STATUS_SUCCESS);
+                mNovelData.save(this);
+                mNovelData = Novel.loadNovel(this, mNovelId);
+            }
+        } else {
+            /* ダウンロードしろ表示 */
+            setUi(STATUS_NO_DATA);
+        }
+
+        setTitle(mNovelData.getTitle());
+    }
+
+    private void requestNovel(int novelId) {
+        setUi(STATUS_REQUESTING);
+
+        NovelListRequest request = new NovelListRequest();
+        request.setNovelId(novelId);
+
+        RequestRunner.enqueue(request.build(), mCallback);
+    }
+
+    private Handler mHandler = new Handler();
+
+    private Callback mCallback = new Callback() {
+        @Override
+        public void onFailure(Request request, IOException e) {
+            Log.d(LOG_TAG, "+ onFailure(Request, IOException)");
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    handleNovelData();
+                }
+            });
+        }
+
+        @Override
+        public void onResponse(Response response) throws IOException {
+            Log.d(LOG_TAG, "+ onResponse(Response)");
+            String xml = response.body().string();
+            Log.d(LOG_TAG, "  " + xml);
+
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+            RegistryMatcher matcher = new RegistryMatcher();
+            matcher.bind(Date.class, new DateFormatTransformer(format));
+
+            Serializer serializer = new Persister(matcher);
+            try {
+                final NovelListResponse list = serializer.read(NovelListResponse.class, xml);
+                List<Novel> novels = list.getNovelList();
+                if (0 < novels.size()) {
+                    mNovelData = novels.get(0);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    handleNovelData();
+                }
+            });
+        }
+    };
+
     private void shareNovel(Novel novel) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, novel.getBrowserUrl());
@@ -178,45 +268,64 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setUi(int status) {
         switch (status) {
-            case DownloadService.STATUS_RUNNING:
+            case STATUS_RUNNING:
                 /* ダウンロード中 */
+                mProgressBar.setVisibility(View.INVISIBLE);
                 mProgressView.setVisibility(View.VISIBLE);
                 mProgressView.setText(R.string.notification_download_running);
                 mDownloadButton.setEnabled(false);
                 break;
-            case DownloadService.STATUS_SUCCESS:
+            case STATUS_UPDATE:
+                /* アップデートあります */
+                mProgressBar.setVisibility(View.INVISIBLE);
+                mProgressView.setVisibility(View.INVISIBLE);
+                mDownloadButton.setText(R.string.update);
+                mDownloadButton.setEnabled(true);
+                break;
+            case STATUS_SUCCESS:
                 /* 完了 */
                 mProgressView.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.INVISIBLE);
                 mDownloadButton.setText(R.string.read);
                 mDownloadButton.setEnabled(true);
-                mNovelData = Novel.loadNovel(this, mNovelId);
                 break;
-            case DownloadService.STATUS_INIT:
+            case STATUS_NO_DATA:
                 /* 未ダウンロード */
                 mProgressView.setVisibility(View.INVISIBLE);
+                mProgressBar.setVisibility(View.INVISIBLE);
                 mDownloadButton.setText(R.string.download);
                 mDownloadButton.setEnabled(true);
                 break;
-            case DownloadService.STATUS_PENDING:
+            case STATUS_PENDING:
                 /* 待機中 */
                 mProgressView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.INVISIBLE);
                 mProgressView.setText(R.string.notification_download_pending);
                 mDownloadButton.setEnabled(false);
                 break;
-            case DownloadService.STATUS_PROVIDING:
+            case STATUS_PROVIDING:
                 /* データのパース中 */
                 mProgressView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.INVISIBLE);
                 mProgressView.setText(R.string.notification_download_providing);
                 mDownloadButton.setEnabled(false);
                 break;
-            case DownloadService.STATUS_FILE_ERROR:
+            case STATUS_FILE_ERROR:
                 /* ファイルエラー */
                 mProgressView.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.INVISIBLE);
                 mProgressView.setText(R.string.notification_download_file_error);
                 mDownloadButton.setEnabled(true);
                 break;
+            case STATUS_REQUESTING:
+                /* データリクエスト中 */
+                mProgressBar.setVisibility(View.VISIBLE);
+                mProgressBar.setVisibility(View.VISIBLE);
+                mDownloadButton.setEnabled(false);
+                break;
             default:
                 /* エラー */
+                mProgressBar.setVisibility(View.INVISIBLE);
                 mProgressView.setVisibility(View.VISIBLE);
                 mProgressView.setText(R.string.notification_download_failed);
                 mDownloadButton.setEnabled(true);
@@ -274,10 +383,21 @@ public class DetailActivity extends AppCompatActivity {
     };
 
     private void onReadButtonClicked() {
-        if (0 < mNovelData.getDownloadDate().getTime()) {
-            Intent intent = new Intent(this, ViewerActivity.class);
-            intent.putExtra(ViewerActivity.EXTRA_NOVEL_ID, mNovelData.getNovelId());
-            startActivity(intent);
+        Novel novelData = Novel.loadNovel(this, mNovelId);
+        if (novelData != null && 0 < novelData.getDownloadDate().getTime()) {
+            /* ダウンロードしてあった場合、アップデートチェック */
+            long local = novelData.getUpdateDate().getTime();
+            long server = mNovelData.getUpdateDate().getTime();
+            if (local < server) {
+                Intent intent = new Intent(this, DownloadService.class);
+                intent.putExtra(DownloadService.EXTRA_NOVEL_ID, mNovelData.getNovelId());
+                intent.putExtra(DownloadService.EXTRA_RECEIVER, mReceiver);
+                startService(intent);
+            } else {
+                Intent intent = new Intent(this, ViewerActivity.class);
+                intent.putExtra(ViewerActivity.EXTRA_NOVEL_ID, mNovelData.getNovelId());
+                startActivity(intent);
+            }
         } else {
             Intent intent = new Intent(this, DownloadService.class);
             intent.putExtra(DownloadService.EXTRA_NOVEL_ID, mNovelData.getNovelId());

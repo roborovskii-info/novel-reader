@@ -40,16 +40,19 @@
             android:layout_alignParentBottom="true"
             android:background="@color/footer_background"
             android:minHeight="?attr/actionBarSize">
+
         <SeekBar
                 android:id="@+id/seek_page"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 />
+
     </FrameLayout>
 
     <include
             layout="@layout/toolbar"
             />
+
 </RelativeLayout>
 

@@ -6,12 +6,17 @@
     <color name="accent">#ff4081</color>
     <color name="accent_yellow">#ffc107</color>
 
+    <color name="cute_primary">#E91E63</color>
+    <color name="cute_primary_dark">#C2185B</color>
+    <color name="cute_accent">#4CAF50</color>
+
+    <color name="cool_primary">#3F51B5</color>
+    <color name="cool_primary_dark">#303F9F</color>
+    <color name="cool_accent">#4CAF50</color>
+
     <color name="base_background">#fffafafa</color>
     <color name="cover_background">#ffcccccc</color>
     <color name="footer_background">#33ededed</color>
-
-    <color name="tab_text">#99ffffff</color>
-    <color name="tab_selected_text">#ffffffff</color>
 
     <color name="white">#ffffff</color>
     <color name="light_grey">#cccccc</color>

@@ -35,7 +35,6 @@ public class LocalListFragment extends Fragment {
 
     private LocalListAdapter mAdapter;
 
-    private Handler mHandler = new Handler();
     private Novel mSelectedNovel;
     private ProgressBar mProgressBar;
 
@@ -56,15 +55,12 @@ public class LocalListFragment extends Fragment {
         Log.d(LOG_TAG, "+ onViewCreated(View, Bundle)");
 
         mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
+        mProgressBar.setVisibility(View.VISIBLE);
 
-        createAdapter();
-
+        mAdapter = new LocalListAdapter(getActivity());
         ListView listView = (ListView) view.findViewById(R.id.list_novel);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(mItemClickListener);
-        registerForContextMenu(listView);
-
-        mProgressBar.setVisibility(View.GONE);
     }
 
 
@@ -81,6 +77,14 @@ public class LocalListFragment extends Fragment {
         mSelectedNovel = (Novel) o;
         android.view.MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.context_local_list, menu);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        createAdapter();
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -106,9 +110,7 @@ public class LocalListFragment extends Fragment {
         if (parent == null) {
             return;
         }
-        if (mAdapter == null) {
-            mAdapter = new LocalListAdapter(getActivity());
-        } else {
+        if (!mAdapter.isEmpty()) {
             mAdapter.clear();
         }
         String where = NovelTable.Columns.DOWNLOAD_DATE + " != 0";
