@@ -183,8 +183,6 @@ public class DetailActivity extends BaseActivity {
             } else {
                 /* 最新でダウンロード済 */
                 setUi(STATUS_SUCCESS);
-                mNovelData.save(this);
-                mNovelData = Novel.loadNovel(this, mNovelId);
             }
         } else {
             /* ダウンロードしろ表示 */
@@ -389,16 +387,20 @@ public class DetailActivity extends BaseActivity {
             long local = novelData.getUpdateDate().getTime();
             long server = mNovelData.getUpdateDate().getTime();
             if (local < server) {
+                /* アップデート */
                 Intent intent = new Intent(this, DownloadService.class);
                 intent.putExtra(DownloadService.EXTRA_NOVEL_ID, mNovelData.getNovelId());
                 intent.putExtra(DownloadService.EXTRA_RECEIVER, mReceiver);
                 startService(intent);
             } else {
+                /* 読む */
                 Intent intent = new Intent(this, ViewerActivity.class);
                 intent.putExtra(ViewerActivity.EXTRA_NOVEL_ID, mNovelData.getNovelId());
                 startActivity(intent);
             }
         } else {
+            /* 新規ダウンロード */
+            mNovelData.save(this);
             Intent intent = new Intent(this, DownloadService.class);
             intent.putExtra(DownloadService.EXTRA_NOVEL_ID, mNovelData.getNovelId());
             intent.putExtra(DownloadService.EXTRA_RECEIVER, mReceiver);
@@ -411,6 +413,10 @@ public class DetailActivity extends BaseActivity {
         protected void onReceiveResult(int status, Bundle resultData) {
             Log.d(LOG_TAG, "# ResultReceiver#onReceiveResult(int, Bundle) : " + status);
             setUi(status);
+
+            if (status == STATUS_SUCCESS) {
+                mNovelData.save(DetailActivity.this);
+            }
         }
     };
 

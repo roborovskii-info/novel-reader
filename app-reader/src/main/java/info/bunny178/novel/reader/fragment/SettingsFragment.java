@@ -8,6 +8,7 @@ import android.preference.PreferenceFragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
 import info.bunny178.novel.reader.R;
 import info.bunny178.util.PreferenceProvider;
@@ -69,6 +70,10 @@ public class SettingsFragment extends PreferenceFragment {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             reloadSummary();
+            /* テーマ変更はアプリ再起動してください */
+            if (key.equals(getString(R.string.pref_key_theme))) {
+                Toast.makeText(getActivity(), R.string.info_restart_please, Toast.LENGTH_SHORT).show();
+            }
         }
     };
 }

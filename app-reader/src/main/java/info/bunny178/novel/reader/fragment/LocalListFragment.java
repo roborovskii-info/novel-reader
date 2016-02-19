@@ -1,6 +1,9 @@
 package info.bunny178.novel.reader.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -36,6 +40,7 @@ public class LocalListFragment extends Fragment {
     private LocalListAdapter mAdapter;
 
     private Novel mSelectedNovel;
+
     private ProgressBar mProgressBar;
 
     public static LocalListFragment newInstance() {
@@ -61,8 +66,8 @@ public class LocalListFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.list_novel);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(mItemClickListener);
+        registerForContextMenu(listView);
     }
-
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
@@ -90,13 +95,12 @@ public class LocalListFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(android.view.MenuItem item) {
         int itemId = item.getItemId();
-        switch(itemId) {
+        switch (itemId) {
             case R.id.menu_open_in_browser:
                 openBrowser(mSelectedNovel);
                 return true;
             case R.id.menu_remove:
-                deleteNovel(mSelectedNovel.getNovelId());
-                createAdapter();
+                displayDeleteConfirm(mSelectedNovel);
                 return true;
             case R.id.menu_show_details:
                 startDetailsActivity(mSelectedNovel.getNovelId());
@@ -148,10 +152,33 @@ public class LocalListFragment extends Fragment {
         startActivity(intent);
     }
 
+    /**
+     * 削除しますかダイアログの表示
+     *
+     * @param novel 削除対象の小説
+     */
+    private void displayDeleteConfirm(final Novel novel) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(novel.getTitle())
+                .setMessage(R.string.warn_delete_novel_confirm)
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteNovel(novel.getNovelId());
+                        createAdapter();
+                    }
+                }).setNegativeButton(android.R.string.cancel, null);
+        AlertDialog dialog = builder.create();
+        dialog.setOwnerActivity(getActivity());
+        dialog.show();
+    }
+
     private void deleteNovel(int novelId) {
         Novel.deleteNovel(getActivity(), novelId);
         Chapter.deleteChapters(getActivity(), novelId);
         Page.deletePages(getActivity(), novelId);
+
+        Toast.makeText(getActivity(), R.string.info_delete_complete, Toast.LENGTH_SHORT).show();
     }
 
     private void openBrowser(Novel novel) {
