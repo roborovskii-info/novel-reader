@@ -35,7 +35,6 @@ import info.bunny178.util.PreferenceProvider;
 import io.fabric.sdk.android.Fabric;
 
 /**
- *
  * 小説を探す/選ぶ側のActivity
  *
  * @author ISHIMARU Sohei on 2015/09/08.
@@ -82,7 +81,7 @@ public class BrowseActivity extends BaseActivity {
 
         PreferenceProvider pp = new PreferenceProvider(this);
         int launchCount = pp.readInt(R.string.pref_key_launch_count, 0);
-        if (launchCount % 4 == 0) {
+        if (0 < launchCount && launchCount % 4 == 0) {
             boolean review = pp.readBoolean(R.string.pref_key_write_review, false);
             if (!review) {
                 showReviewDialog();
@@ -137,7 +136,7 @@ public class BrowseActivity extends BaseActivity {
         }
 
         int primary = super.getPrimaryColor();
-        if  (header != null) {
+        if (header != null) {
             header.setBackgroundColor(primary);
         } else {
             Log.e(LOG_TAG, "  Header is null");
