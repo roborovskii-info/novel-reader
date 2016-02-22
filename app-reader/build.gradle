@@ -18,6 +18,12 @@ repositories {
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+    useLibrary 'org.apache.http.legacy'
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 
     defaultConfig {
         applicationId "info.bunny178.novel.reader"
@@ -26,10 +32,11 @@ android {
         versionCode 1
         versionName "1.0.0"
     }
+
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 
@@ -37,6 +44,17 @@ android {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
+    }
+    /* Rename apk file: [package name]-[version name]-[version code].apk */
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def file = output.outputFile
+            def versionInfo =
+                    variant.mergedFlavor.applicationId +
+                            "-" + variant.mergedFlavor.versionName +
+                            "-" + variant.mergedFlavor.versionCode
+            output.outputFile = new File(file.parent, file.name.replace("app-reader-release.apk", versionInfo + ".apk"))
+        }
     }
 }
 
