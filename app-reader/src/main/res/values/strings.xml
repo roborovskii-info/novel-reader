@@ -48,6 +48,7 @@
 
     <string name="info_delete_complete">削除しました</string>
     <string name="info_restart_please">テーマを反映するには、アプリを再起動する必要があります。</string>
+    <string name="info_write_review">アプリに関する、ご意見をお聞かせください</string>
     <string name="error_novel_not_found">指定された小説が見つかりません</string>
     <string name="error_network_error">ネットワークエラーが発生しました</string>
     <string name="warn_novel_list_empty">表示する小説がありません。</string>

@@ -5,14 +5,17 @@ import com.google.android.gms.ads.AdView;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,6 +31,7 @@ import info.bunny178.novel.reader.fragment.NovelPagerFragment;
 import info.bunny178.novel.reader.fragment.NovelSearchFragment;
 import info.bunny178.novel.reader.fragment.SettingsFragment;
 import info.bunny178.novel.reader.model.Novel;
+import info.bunny178.util.PreferenceProvider;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -75,6 +79,17 @@ public class BrowseActivity extends BaseActivity {
         }
 
         setupAds();
+
+        PreferenceProvider pp = new PreferenceProvider(this);
+        int launchCount = pp.readInt(R.string.pref_key_launch_count, 0);
+        if (launchCount % 4 == 0) {
+            boolean review = pp.readBoolean(R.string.pref_key_write_review, false);
+            if (!review) {
+                showReviewDialog();
+            }
+        }
+        launchCount++;
+        pp.writeInt(R.string.pref_key_launch_count, launchCount);
     }
 
     @Override
@@ -195,5 +210,32 @@ public class BrowseActivity extends BaseActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.container_main, fragment);
         ft.commit();
+    }
+
+    private void showReviewDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage(R.string.info_write_review);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_google_play)));
+                startActivity(intent);
+                PreferenceProvider pp = new PreferenceProvider(BrowseActivity.this);
+                pp.writeBoolean(R.string.pref_key_write_review, true);
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.setOwnerActivity(this);
+        dialog.show();
     }
 }

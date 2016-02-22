@@ -5,6 +5,7 @@ import com.squareup.picasso.Picasso;
 import android.animation.Animator;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -81,8 +83,6 @@ public class ViewerActivity extends BaseActivity {
     private float mLineSpacing;
 
     private int mFontSize;
-
-    private String mFabPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -243,7 +243,6 @@ public class ViewerActivity extends BaseActivity {
                 getString(R.string.pref_default_line_spacing)));
         mFontSize = Integer.parseInt(pp.readString(R.string.pref_key_font_size,
                 getString(R.string.pref_default_font_size)));
-        mFabPosition = pp.readString(R.string.pref_key_fab_position, getString(R.string.position_right));
     }
 
     private void setPageLabel() {
@@ -382,6 +381,9 @@ public class ViewerActivity extends BaseActivity {
         getContentResolver().update(uri, values, null, null);
     }
 
+    /**
+     * ページの中身を表示するアダプタ
+     */
     class NovelPagerAdapter extends PagerAdapter {
 
         @Override
@@ -397,7 +399,6 @@ public class ViewerActivity extends BaseActivity {
             View pageRow = mLayoutInflater.inflate(R.layout.row_page, container, false);
             container.addView(pageRow);
             int pageNumber = position + 1;
-
             Page page = mPageCache.get(pageNumber);
             if (page == null) {
                 Log.v(LOG_TAG, "  Load from DB at " + position);
@@ -407,6 +408,10 @@ public class ViewerActivity extends BaseActivity {
             }
             if (page != null) {
                 mPageCache.put(pageNumber, page);
+                /* ヘッダーの色変更 */
+                View header = pageRow.findViewById(R.id.container_header);
+                header.setBackgroundColor(getPrimaryColor());
+
                 /* チャプター表示 */
                 TextView chapterView = (TextView) pageRow.findViewById(R.id.text_chapter);
                 String chapterTitle = mChapterCache.get(page.getChapterId());
@@ -430,6 +435,7 @@ public class ViewerActivity extends BaseActivity {
                     bodyView.setText(Html.fromHtml(body));
                     bodyView.setOnClickListener(mPageTapListener);
                 }
+
                 /* 挿絵の表示 */
                 final String url = page.getLargeImageUrl();
                 ImageView artView = (ImageView) pageRow.findViewById(R.id.image_artwork);
@@ -446,10 +452,36 @@ public class ViewerActivity extends BaseActivity {
                         }
                     });
                 }
+
+                /* ページ番号表記 */
+                TextView pageView = (TextView) pageRow.findViewById(R.id.text_page);
+                pageView.setText(String.format(getString(R.string.page_unit), pageNumber));
+
+                int accent = getAccentColor();
+
+                /* 次へボタン */
+                ImageButton nextButton = (ImageButton) pageRow.findViewById(R.id.button_next);
+                nextButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
+                    }
+                });
+                nextButton.setEnabled(pageNumber < mNovel.getPageCount());
+                nextButton.setColorFilter(accent, PorterDuff.Mode.MULTIPLY);
+
+                /* 前へボタン */
+                ImageButton prevButton = (ImageButton) pageRow.findViewById(R.id.button_prev);
+                prevButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+                    }
+                });
+                prevButton.setEnabled(1 < pageNumber);
+                prevButton.setColorFilter(accent, PorterDuff.Mode.MULTIPLY);
             }
-            /* ページ番号表記 */
-            TextView pageView = (TextView) pageRow.findViewById(R.id.text_page);
-            pageView.setText(String.format(getString(R.string.page_unit), pageNumber));
+
             return pageRow;
         }
 
