@@ -50,6 +50,10 @@
 -keep interface com.squareup.okhttp.** { *; }
 -dontwarn com.squareup.okhttp.**
 
+##-------- okio --------
+-dontwarn java.nio.file.*
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+
 ##-------- Nend SDK --------
 -keep class net.nend.android.** { *; }
 -dontwarn net.nend.android.**
