@@ -4,6 +4,8 @@
 
 小説リーダー
 
+ePubライブラリ(Java) : https://github.com/psiegman/epublib
+
 # マーケット紹介文
 
 ```
