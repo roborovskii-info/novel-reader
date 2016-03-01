@@ -43,9 +43,9 @@ public class NovelPagerFragment extends Fragment {
     class FragmentTabsAdapter extends FragmentStatePagerAdapter {
 
         private String[] sSortValues = {
-                NovelListRequest.SORT_DAILY_RANKING,
                 NovelListRequest.SORT_WEEKLY_RANKING,
                 NovelListRequest.SORT_TOTAL_RANKING,
+                NovelListRequest.SORT_DAILY_RANKING,
                 NovelListRequest.SORT_NEW_ARRIVAL,
                 NovelListRequest.SORT_HALL_OF_FAME,
                 NovelListRequest.SORT_RATING_AVERAGE,
@@ -54,9 +54,9 @@ public class NovelPagerFragment extends Fragment {
         };
 
         private int[] sLabelIds = {
-                R.string.label_sort_daily_ranking,
                 R.string.label_sort_weekly_ranking,
                 R.string.label_sort_total_ranking,
+                R.string.label_sort_daily_ranking,
                 R.string.label_sort_new_arrival,
                 R.string.label_sort_hall_of_fame,
                 R.string.label_sort_rating_ranking,
