@@ -24,6 +24,17 @@
 
 ```
 
+# システムフォントのリスト取得
+
+```java
+File fontsDir = new File("/system/fonts");
+File[] fonts = fontsDir.listFiles();
+for (File font : fonts) {
+    Log.d(LOG_TAG, "  Font : " + font.getName());
+}
+```
+
+
 # API仕様
 
 ## getNovelList
