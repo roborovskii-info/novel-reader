@@ -34,7 +34,6 @@ for (File font : fonts) {
 }
 ```
 
-
 # API仕様
 
 ## getNovelList

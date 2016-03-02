@@ -11,7 +11,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -51,6 +49,8 @@ public class ViewerActivity extends BaseActivity {
     private static final String LOG_TAG = "ViewerActivity";
 
     public static final String EXTRA_NOVEL_ID = "novel_id";
+
+    public static final String EXTRA_PAGE_NUMBER = "page_number";
 
     private static final int REQUEST_CHAPTER_LIST = 1;
 
@@ -130,10 +130,18 @@ public class ViewerActivity extends BaseActivity {
 
         hideToolBar();
 
-        /* 前回終了時のページポジションへ移動 */
-        mCurrentPosition = mNovel.getReadIndex();
-        mViewPager.setCurrentItem(mCurrentPosition, false);
-        mSeekBar.setProgress(mCurrentPosition);
+        int pageNumber = getIntent().getIntExtra(EXTRA_PAGE_NUMBER, -1);
+
+        if (0 < pageNumber) {
+            mCurrentPosition = pageNumber - 1;
+            mViewPager.setCurrentItem(mCurrentPosition, false);
+            mSeekBar.setProgress(mCurrentPosition);
+        } else {
+            /* 前回終了時のページポジションへ移動 */
+            mCurrentPosition = mNovel.getReadIndex();
+            mViewPager.setCurrentItem(mCurrentPosition, false);
+            mSeekBar.setProgress(mCurrentPosition);
+        }
 
         Log.d(LOG_TAG, "  Last page position : " + mCurrentPosition);
     }
@@ -230,7 +238,8 @@ public class ViewerActivity extends BaseActivity {
             Context context = ViewerActivity.this;
             Bookmark bookmark = new Bookmark();
             bookmark.setCreateDate(System.currentTimeMillis());
-            bookmark.setPageId(page.getPageId());
+            bookmark.setPageNumber(page.getPageNumber());
+            bookmark.setNovelId(mNovel.getNovelId());
             bookmark.save(context);
 
             Toast.makeText(context, R.string.info_add_bookmark, Toast.LENGTH_SHORT).show();

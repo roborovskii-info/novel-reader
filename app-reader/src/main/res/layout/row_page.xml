@@ -10,15 +10,12 @@
                 android:id="@+id/container_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:padding="@dimen/common_spacing_l">
             <TextView
                     android:id="@+id/text_chapter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title.Inverse"
                     android:textColor="@color/white"
                     />
         </FrameLayout>

@@ -11,6 +11,10 @@
             android:icon="@drawable/ic_drawer_book_open_variant"
             android:title="@string/read_novel"/>
     <item
+            android:id="@+id/drawer_bookmark"
+            android:icon="@drawable/ic_action_action_bookmark"
+            android:title="@string/bookmark"/>
+    <item
             android:id="@+id/drawer_settings"
             android:icon="@drawable/ic_drawer_action_settings"
             android:title="@string/settings"/>

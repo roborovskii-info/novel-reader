@@ -6,7 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import info.bunny178.novel.reader.db.BookmarkTable;
+import info.bunny178.novel.reader.db.ChapterTable;
 
 
 /**
@@ -15,7 +19,8 @@ import info.bunny178.novel.reader.db.BookmarkTable;
 public class Bookmark extends BaseModel implements BookmarkTable.Columns {
 
     private int mBookmarkId;
-    private int mPageId;
+    private int mPageNumber;
+    private int mNovelId;
     private long mCreateDate;
 
     public Bookmark() {
@@ -34,12 +39,12 @@ public class Bookmark extends BaseModel implements BookmarkTable.Columns {
         mBookmarkId = bookmarkId;
     }
 
-    public int getPageId() {
-        return mPageId;
+    public int getPageNumber() {
+        return mPageNumber;
     }
 
-    public void setPageId(int pageId) {
-        mPageId = pageId;
+    public void setPageNumber(int pageNumber) {
+        mPageNumber = pageNumber;
     }
 
     public long getCreateDate() {
@@ -48,6 +53,14 @@ public class Bookmark extends BaseModel implements BookmarkTable.Columns {
 
     public void setCreateDate(long createDate) {
         mCreateDate = createDate;
+    }
+
+    public int getNovelId() {
+        return mNovelId;
+    }
+
+    public void setNovelId(int novelId) {
+        mNovelId = novelId;
     }
 
     public int save(Context context) {
@@ -63,13 +76,53 @@ public class Bookmark extends BaseModel implements BookmarkTable.Columns {
         return mBookmarkId;
     }
 
+    public static Bookmark load(Context context, int bookmarkId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = BookmarkTable.CONTENT_URI;
+        String where = BookmarkTable.Columns.BOOKMARK_ID + " = " + bookmarkId;
+        Cursor c = null;
+        try {
+            c = resolver.query(uri, null, where, null, null);
+            if (c != null && c.moveToFirst()) {
+                return new Bookmark(c);
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return null;
+    }
+
+    public static List<Bookmark> loadBookmarks(Context context) {
+        List<Bookmark> bookmarks = new ArrayList<>();
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = BookmarkTable.CONTENT_URI;
+        Cursor c = null;
+        try {
+            String sortOrder = BookmarkTable.Columns.CREATE_DATE + " DESC";
+            c = resolver.query(uri, null, null, null, sortOrder);
+            if (c != null && c.moveToFirst()) {
+                do {
+                    bookmarks.add(new Bookmark(c));
+                } while (c.moveToNext());
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return bookmarks;
+    }
+
     @Override
     public ContentValues toContentValues() {
         ContentValues values = new ContentValues();
         if (0 < mBookmarkId) {
             values.put(BOOKMARK_ID, mBookmarkId);
         }
-        values.put(PAGE_ID, mPageId);
+        values.put(PAGE_NUMBER, mPageNumber);
+        values.put(NOVEL_ID, mNovelId);
         values.put(CREATE_DATE, mCreateDate);
         return values;
     }
@@ -77,7 +130,8 @@ public class Bookmark extends BaseModel implements BookmarkTable.Columns {
     @Override
     public void fromCursor(Cursor c) {
         mBookmarkId = c.getInt(c.getColumnIndex(BOOKMARK_ID));
-        mPageId = c.getInt(c.getColumnIndex(PAGE_ID));
+        mPageNumber = c.getInt(c.getColumnIndex(PAGE_NUMBER));
+        mNovelId = c.getInt(c.getColumnIndex(NOVEL_ID));
         mCreateDate = c.getLong(c.getColumnIndex(CREATE_DATE));
     }
 }

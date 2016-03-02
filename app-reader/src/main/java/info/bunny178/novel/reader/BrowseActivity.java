@@ -28,6 +28,7 @@ import com.crashlytics.android.Crashlytics;
 
 import java.io.File;
 
+import info.bunny178.novel.reader.fragment.BookmarkListFragment;
 import info.bunny178.novel.reader.fragment.LocalListFragment;
 import info.bunny178.novel.reader.fragment.NovelPagerFragment;
 import info.bunny178.novel.reader.fragment.NovelSearchFragment;
@@ -190,6 +191,10 @@ public class BrowseActivity extends BaseActivity {
                     attachLocalList();
                     setTitle(menuItem.getTitle());
                     break;
+                case R.id.drawer_bookmark:
+                    attachBookmarkList();
+                    setTitle(menuItem.getTitle());
+                    break;
                 case R.id.drawer_settings:
                     startSettingsActivity();
                     break;
@@ -208,6 +213,13 @@ public class BrowseActivity extends BaseActivity {
 
     private void attachLocalList() {
         Fragment fragment = LocalListFragment.newInstance();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.container_main, fragment);
+        ft.commit();
+    }
+
+    private void attachBookmarkList() {
+        Fragment fragment = BookmarkListFragment.newInstance();
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.container_main, fragment);
         ft.commit();

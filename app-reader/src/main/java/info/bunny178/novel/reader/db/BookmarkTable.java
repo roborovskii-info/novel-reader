@@ -18,7 +18,8 @@ public class BookmarkTable implements TableInterface {
 
     public interface Columns {
         String BOOKMARK_ID = "bookmark_id";
-        String PAGE_ID = "page_id";
+        String PAGE_NUMBER = "page_id";
+        String NOVEL_ID = "novel_id";
         String CREATE_DATE = "create_date";
     }
 
@@ -27,7 +28,8 @@ public class BookmarkTable implements TableInterface {
                 /* @formatter:off */
         String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
                 + Columns.BOOKMARK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + Columns.PAGE_ID + " INTEGER NOT NULL, "
+                + Columns.PAGE_NUMBER + " INTEGER NOT NULL, "
+                + Columns.NOVEL_ID + " INTEGER NOT NULL, "
                 + Columns.CREATE_DATE + " INTEGER"
                 + ")";
         /* @formatter:on */
@@ -47,7 +49,8 @@ public class BookmarkTable implements TableInterface {
         /* @formatter:off */
         return new String[] {
                 Columns.BOOKMARK_ID,
-                Columns.PAGE_ID,
+                Columns.PAGE_NUMBER,
+                Columns.NOVEL_ID,
                 Columns.CREATE_DATE,
         };
         /* @formatter:on */

@@ -123,6 +123,24 @@ public class Page extends BaseModel implements PageTable.Columns{
         return null;
     }
 
+    public static Page loadPage(Context context, int pageId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = PageTable.CONTENT_URI;
+        String where = PAGE_ID + " = " + pageId;
+        Cursor c = null;
+        try {
+            c = resolver.query(uri, null, where, null, null);
+            if (c != null && c.moveToFirst()) {
+                return new Page(c);
+            }
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return null;
+    }
+
     public int getPageId() {
         return mPageId;
     }
