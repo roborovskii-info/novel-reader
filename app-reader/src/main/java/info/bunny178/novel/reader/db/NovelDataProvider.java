@@ -15,48 +15,58 @@ import android.util.Log;
 
 /**
  * <pre>
- * CREATE TABLE novel
- * (
- *      novel_id         INTEGER PRIMARY KEY,
- *      title            TEXT NOT NULL,
- *      genre_name       TEXT,
- *      author_id        INTEGER NOT NULL,
- *      author_name      TEXT,
- *      update_date      TEXT,
- *      novel_status     INTEGER,
- *      page_count       INTEGER,
- *      view_count       INTEGER,
- *      review_count     INTEGER,
- *      rating_average   REAL DEFAULT 0,
- *      content_rating   INTEGER,
- *      novel_caption    TEXT,
- *      large_image_url  TEXT,
+ * CREATE TABLE IF NOT EXISTS chapter(
+ *      chapter_id INTEGER PRIMARY KEY,
+ *      novel_id INTEGER DEFAULT 0,
+ *      chapter_number INTEGER DEFAULT 0,
+ *      page_number INTEGER DEFAULT 0,
+ *      chapter_title TEXT
+ * );
+ * CREATE TABLE IF NOT EXISTS genre(
+ *      genre_id INTEGER PRIMARY KEY,
+ *      genre_name TEXT,
+ *      sort_index INTEGER
+ * );
+ * CREATE TABLE IF NOT EXISTS novel(
+ *      novel_id INTEGER PRIMARY KEY,
+ *      title TEXT NOT NULL,
+ *      genre_name TEXT,
+ *      author_id INTEGER NOT NULL,
+ *      author_name TEXT,
+ *      update_date TEXT,
+ *      novel_status INTEGER, 
+ *      page_count INTEGER,
+ *      view_count INTEGER,
+ *      review_count INTEGER,
+ *      rating_average REAL DEFAULT 0,
+ *      content_rating INTEGER,
+ *      novel_caption TEXT,
+ *      large_image_url TEXT,
  *      medium_image_url TEXT,
- *      small_image_url  TEXT,
- *      download_url     TEXT,
- *      download_date    INTEGER DEFAULT 0,
- *      read_index       INTEGER DEFAULT 0
+ *      small_image_url TEXT,
+ *      download_url TEXT,
+ *      download_date INTEGER DEFAULT 0,
+ *      read_index INTEGER DEFAULT 0
+ * );
+ * CREATE TABLE IF NOT EXISTS bookmark(
+ *      bookmark_id INTEGER PRIMARY KEY AUTOINCREMENT,
+ *      page_id INTEGER NOT NULL,
+ *      create_date INTEGER
  * )
- * CREATE TABLE pages
- * (
- *      page_id         INTEGER PRIMARY KEY AUTOINCREMENT,
- *      page_number     INTEGER,
- *      update_date     INTEGER,
- *      page_body       TEXT,
+ * CREATE TABLE IF NOT EXISTS page(
+ *      page_id INTEGER PRIMARY KEY AUTOINCREMENT,
+ *      page_number INTEGER,
+ *      update_date INTEGER,
+ *      page_body TEXT,
  *      image_url_large TEXT,
  *      image_url_medium TEXT,
  *      image_url_small TEXT,
- *      chapter_id      INTEGER,
- *      novel_id        INTEGER
- * )
- * CREATE TABLE chapter
- * (
- *      chapter_id     INTEGER PRIMARY KEY,
- *      novel_id       INTEGER DEFAULT 0,
- *      chapter_number INTEGER DEFAULT 0,
- *      page_number    INTEGER DEFAULT 0,
- *      chapter_title  TEXT
- * )
+ *      chapter_id INTEGER,
+ *      novel_id INTEGER
+ * );
+ * CREATE INDEX index_page_num ON page (
+ *      novel_id, page_number
+ * );
  * </pre>
  *
  * @author ISHIMARU Sohei on 2015/09/14.
@@ -67,7 +77,7 @@ public class NovelDataProvider extends ContentProvider {
 
     public static final String DATABASE_NAME = "novels.sqlite";
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public static final String AUTHORITY = "info.bunny178.novel.reader";
 

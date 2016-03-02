@@ -26,6 +26,8 @@ import android.view.View;
 
 import com.crashlytics.android.Crashlytics;
 
+import java.io.File;
+
 import info.bunny178.novel.reader.fragment.LocalListFragment;
 import info.bunny178.novel.reader.fragment.NovelPagerFragment;
 import info.bunny178.novel.reader.fragment.NovelSearchFragment;

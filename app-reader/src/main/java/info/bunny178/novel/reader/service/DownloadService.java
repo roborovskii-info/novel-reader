@@ -65,7 +65,7 @@ public class DownloadService extends IntentService {
     private ResultReceiver mReceiver;
 
     public DownloadService() {
-        super(LOG_TAG);
+        super("DownloadService");
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.squareup.picasso.Picasso;
 
 import android.animation.Animator;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -29,11 +30,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import info.bunny178.novel.reader.db.NovelTable;
 import info.bunny178.novel.reader.fragment.ChapterListFragment;
 import info.bunny178.novel.reader.fragment.ImageViewerFragment;
 import info.bunny178.novel.reader.fragment.SettingsFragment;
+import info.bunny178.novel.reader.model.Bookmark;
 import info.bunny178.novel.reader.model.Chapter;
 import info.bunny178.novel.reader.model.Novel;
 import info.bunny178.novel.reader.model.Page;
@@ -194,6 +197,9 @@ public class ViewerActivity extends BaseActivity {
             case R.id.menu_show_details:
                 startDetailsActivity();
                 return true;
+            case R.id.menu_bookmark:
+                addBookmark();
+                return true;
 
         }
         return super.onOptionsItemSelected(item);
@@ -216,6 +222,19 @@ public class ViewerActivity extends BaseActivity {
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra(DetailActivity.EXTRA_NOVEL_ID, mNovel.getNovelId());
         startActivity(intent);
+    }
+
+    private void addBookmark() {
+        Page page = mAdapter.getPage(mViewPager.getCurrentItem());
+        if (page != null) {
+            Context context = ViewerActivity.this;
+            Bookmark bookmark = new Bookmark();
+            bookmark.setCreateDate(System.currentTimeMillis());
+            bookmark.setPageId(page.getPageId());
+            bookmark.save(context);
+
+            Toast.makeText(context, R.string.info_add_bookmark, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void attachImageViewerFragment(String url) {
@@ -385,6 +404,21 @@ public class ViewerActivity extends BaseActivity {
      * ページの中身を表示するアダプタ
      */
     class NovelPagerAdapter extends PagerAdapter {
+
+        public Page getPage(int position) {
+            int pageNumber = position + 1;
+            Page page = mPageCache.get(pageNumber);
+            if (page == null) {
+                Log.v(LOG_TAG, "  Load from DB at " + position);
+                page = Page.loadPage(ViewerActivity.this, mNovel.getNovelId(), pageNumber);
+            } else {
+                Log.v(LOG_TAG, "  Page cache hit ! " + position);
+            }
+            if (page != null) {
+                mPageCache.put(pageNumber, page);
+            }
+            return page;
+        }
 
         @Override
         public void setPrimaryItem(ViewGroup container, int position, Object object) {

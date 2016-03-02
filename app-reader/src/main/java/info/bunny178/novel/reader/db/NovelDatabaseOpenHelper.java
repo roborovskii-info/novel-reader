@@ -27,6 +27,7 @@ public class NovelDatabaseOpenHelper extends SQLiteOpenHelper {
         sTableMap.put(ChapterTable.TABLE_NAME, new ChapterTable());
         sTableMap.put(PageTable.TABLE_NAME, new PageTable());
         sTableMap.put(GenreTable.TABLE_NAME, new GenreTable());
+        sTableMap.put(BookmarkTable.TABLE_NAME, new BookmarkTable());
     }
 
     public NovelDatabaseOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

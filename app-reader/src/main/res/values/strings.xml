@@ -26,6 +26,7 @@
     <string name="descending_order">降順</string>
     <string name="search_result">「%s」の検索結果</string>
     <string name="show_details">詳細を見る</string>
+    <string name="bookmark">しおり</string>
 
     <string name="hint_keyword">キーワード</string>
 
@@ -47,6 +48,7 @@
     <string name="pref_title_fab_position">スクロールボタンの位置</string>
 
     <string name="info_delete_complete">削除しました</string>
+    <string name="info_add_bookmark">しおりをはさみました</string>
     <string name="info_restart_please">テーマを反映するには、アプリを再起動する必要があります。</string>
     <string name="info_write_review">アプリに関する、ご意見をお聞かせください</string>
     <string name="error_novel_not_found">指定された小説が見つかりません</string>
