@@ -68,7 +68,7 @@ android.support.design.BuildConfig -> android.support.design.BuildConfig:
     java.lang.String VERSION_NAME -> VERSION_NAME
     6:6:void <init>() -> <init>
 android.support.design.R -> android.support.design.R:
-    9:1106:void <init>() -> <init>
+    9:9:void <init>() -> <init>
 android.support.design.R$anim -> android.support.design.R$anim:
     int abc_fade_in -> abc_fade_in
     int abc_fade_out -> abc_fade_out
@@ -17138,7 +17138,7 @@ android.support.v7.appcompat.BuildConfig -> android.support.v7.appcompat.BuildCo
     java.lang.String VERSION_NAME -> VERSION_NAME
     6:6:void <init>() -> <init>
 android.support.v7.appcompat.R -> android.support.v7.appcompat.R:
-    9:933:void <init>() -> <init>
+    9:9:void <init>() -> <init>
 android.support.v7.appcompat.R$anim -> android.support.v7.appcompat.R$anim:
     int abc_fade_in -> abc_fade_in
     int abc_fade_out -> abc_fade_out
@@ -18394,7 +18394,7 @@ android.support.v7.cardview.BuildConfig -> android.support.v7.cardview.BuildConf
     java.lang.String VERSION_NAME -> VERSION_NAME
     6:6:void <init>() -> <init>
 android.support.v7.cardview.R -> android.support.v7.cardview.R:
-    9:39:void <init>() -> <init>
+    9:9:void <init>() -> <init>
 android.support.v7.cardview.R$attr -> android.support.v7.cardview.R$attr:
     int cardBackgroundColor -> cardBackgroundColor
     int cardCornerRadius -> cardCornerRadius
@@ -18536,7 +18536,7 @@ android.support.v7.recyclerview.BuildConfig -> android.support.v7.recyclerview.B
     java.lang.String VERSION_NAME -> VERSION_NAME
     6:6:void <init>() -> <init>
 android.support.v7.recyclerview.R -> android.support.v7.recyclerview.R:
-    9:22:void <init>() -> <init>
+    9:9:void <init>() -> <init>
 android.support.v7.recyclerview.R$attr -> android.support.v7.recyclerview.R$attr:
     int layoutManager -> layoutManager
     int reverseLayout -> reverseLayout
@@ -27317,7 +27317,7 @@ com.google.android.gms.ads.NativeExpressAdView -> com.google.android.gms.ads.Nat
     com.google.android.gms.ads.AdListener getAdListener() -> getAdListener
     void destroy() -> destroy
 com.google.android.gms.ads.R -> com.google.android.gms.ads.R:
-    9:53:void <init>() -> <init>
+    9:9:void <init>() -> <init>
 com.google.android.gms.ads.R$attr -> com.google.android.gms.ads.R$attr:
     int adSize -> adSize
     int adSizes -> adSizes
@@ -31491,7 +31491,7 @@ com.google.android.gms.analytics.Logger$LogLevel -> com.google.android.gms.analy
     int ERROR -> ERROR
     void <init>() -> <init>
 com.google.android.gms.analytics.R -> com.google.android.gms.analytics.R:
-    9:53:void <init>() -> <init>
+    9:9:void <init>() -> <init>
 com.google.android.gms.analytics.R$attr -> com.google.android.gms.analytics.R$attr:
     int adSize -> adSize
     int adSizes -> adSizes
@@ -47909,7 +47909,7 @@ info.bunny178.novel.reader.ViewerActivity -> info.bunny178.novel.reader.ViewerAc
     android.support.v4.view.ViewPager$OnPageChangeListener mOnPageChangeListener -> p
     android.widget.SeekBar$OnSeekBarChangeListener mOnSeekBarChangeListener -> q
     android.animation.Animator$AnimatorListener mAnimatorListener -> r
-    46:387:void <init>() -> <init>
+    46:343:void <init>() -> <init>
     89:136:void onCreate(android.os.Bundle) -> onCreate
     1199:1199:java.lang.String info.bunny178.novel.reader.model.Novel.getTitle():199:199 -> onCreate
     1199:1199:void onCreate(android.os.Bundle):100 -> onCreate
@@ -47925,7 +47925,7 @@ info.bunny178.novel.reader.ViewerActivity -> info.bunny178.novel.reader.ViewerAc
     2374:2382:void savePagePosition():374:382 -> onPause
     2374:2382:void onPause():154 -> onPause
     3191:3191:int info.bunny178.novel.reader.model.Novel.getNovelId():191:191 -> onPause
-    3191:3191:void savePagePosition():377 -> onPause
+    3191:3191:void savePagePosition():379 -> onPause
     3191:3191:void onPause():154 -> onPause
     159:161:void onStop() -> onStop
     165:166:boolean onCreateOptionsMenu(android.view.Menu) -> onCreateOptionsMenu
@@ -48043,7 +48043,7 @@ info.bunny178.novel.reader.db.ChapterTable -> info.bunny178.novel.reader.db.a:
     17:17:void <clinit>() -> <clinit>
 info.bunny178.novel.reader.db.GenreTable -> info.bunny178.novel.reader.db.b:
     android.net.Uri CONTENT_URI -> a
-    11:18:void <init>() -> <init>
+    11:11:void <init>() -> <init>
     27:35:void onCreate(android.database.sqlite.SQLiteDatabase) -> a
     55:55:java.lang.String getTableName() -> a
     60:63:java.lang.String getItemSelector(java.lang.String) -> a
@@ -48079,7 +48079,7 @@ info.bunny178.novel.reader.db.NovelTable -> info.bunny178.novel.reader.db.d:
     21:21:void <clinit>() -> <clinit>
 info.bunny178.novel.reader.db.PageTable -> info.bunny178.novel.reader.db.e:
     android.net.Uri CONTENT_URI -> a
-    14:22:void <init>() -> <init>
+    14:14:void <init>() -> <init>
     38:58:void onCreate(android.database.sqlite.SQLiteDatabase) -> a
     84:84:java.lang.String getTableName() -> a
     89:92:java.lang.String getItemSelector(java.lang.String) -> a
@@ -48279,7 +48279,7 @@ info.bunny178.novel.reader.fragment.NovelListFragment$3 -> info.bunny178.novel.r
     1191:1191:int info.bunny178.novel.reader.model.Novel.getNovelId():191:191 -> onItemClick
     1191:1191:void onItemClick(android.widget.AdapterView,android.view.View,int,long):331 -> onItemClick
 info.bunny178.novel.reader.fragment.NovelPagerFragment -> info.bunny178.novel.reader.a.o:
-    23:43:void <init>() -> <init>
+    23:23:void <init>() -> <init>
     26:26:info.bunny178.novel.reader.fragment.NovelPagerFragment newInstance() -> a
     32:40:android.view.View onCreateView(android.view.LayoutInflater,android.view.ViewGroup,android.os.Bundle) -> onCreateView
 info.bunny178.novel.reader.fragment.NovelPagerFragment$FragmentTabsAdapter -> info.bunny178.novel.reader.a.p:
@@ -48449,7 +48449,7 @@ info.bunny178.novel.reader.model.Page -> info.bunny178.novel.reader.b.f:
 info.bunny178.novel.reader.net.BaseRequest -> info.bunny178.novel.reader.c.a:
     int mSize -> a
     int mPage -> b
-    11:25:void <init>() -> <init>
+    11:11:void <init>() -> <init>
     56:57:void setSize$13462e() -> a
     64:65:void setPage(int) -> a
     68:72:com.squareup.okhttp.HttpUrl$Builder getBaseUrl() -> b
