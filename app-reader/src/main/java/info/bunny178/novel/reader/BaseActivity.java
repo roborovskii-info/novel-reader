@@ -30,14 +30,14 @@ public class BaseActivity extends AppCompatActivity {
 
         PreferenceProvider pp = new PreferenceProvider(this);
         String theme = pp.readString(R.string.pref_key_theme);
-        if (getString(R.string.theme_value_dark).equals(theme)) {
-            setTheme(R.style.Theme_Bunny178_Dark);
+        if (getString(R.string.theme_value_light).equals(theme)) {
+            setTheme(R.style.Theme_Bunny178);
         } else if (getString(R.string.theme_value_cute).equals(theme)) {
             setTheme(R.style.Theme_Bunny178_Cute);
         } else if (getString(R.string.theme_value_cool).equals(theme)) {
             setTheme(R.style.Theme_Bunny178_Cool);
         } else {
-            setTheme(R.style.Theme_Bunny178);
+            setTheme(R.style.Theme_Bunny178_Dark);
         }
 
         super.onCreate(savedInstanceState);

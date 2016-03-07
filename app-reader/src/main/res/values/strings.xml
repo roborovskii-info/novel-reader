@@ -54,6 +54,8 @@
     <string name="error_novel_not_found">指定された小説が見つかりません</string>
     <string name="error_network_error">ネットワークエラーが発生しました</string>
     <string name="warn_novel_list_empty">表示する小説がありません。</string>
+    <string name="warn_bookmark_empty">しおりは設定されていません。</string>
+    <string name="warn_library_empty">ライブラリに小説が追加されていません。\n読みたい本を探してダウンロードしよう。</string>
     <string name="warn_genre_list_empty">ジャンルデータがありません。</string>
     <string name="warn_delete_novel_confirm">小説のデータを削除します。</string>
 

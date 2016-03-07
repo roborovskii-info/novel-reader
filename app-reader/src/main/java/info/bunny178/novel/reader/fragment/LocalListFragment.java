@@ -51,7 +51,7 @@ public class LocalListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
-        return inflater.inflate(R.layout.fragment_novel_list, container, false);
+        return inflater.inflate(R.layout.fragment_local_list, container, false);
     }
 
     @Override

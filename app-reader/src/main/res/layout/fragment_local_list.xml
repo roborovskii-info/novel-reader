@@ -6,7 +6,7 @@
                 tools:context=".fragment.NovelListFragment">
 
     <ListView
-            android:id="@+id/list_bookmark"
+            android:id="@+id/list_novel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -19,14 +19,23 @@
             android:layout_centerHorizontal="true"
             />
 
-    <TextView
-            android:id="@+id/text_empty"
+    <LinearLayout
+            android:id="@+id/container_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/warn_bookmark_empty"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:orientation="vertical"
             android:visibility="gone"
-            android:textAppearance="?android:textAppearanceMedium"/>
+            android:gravity="center_horizontal"
+            >
+        <TextView
+                android:id="@+id/text_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/warn_library_empty"
+                android:textAppearance="?android:textAppearanceMedium"
+                />
 
+    </LinearLayout>
 </RelativeLayout>

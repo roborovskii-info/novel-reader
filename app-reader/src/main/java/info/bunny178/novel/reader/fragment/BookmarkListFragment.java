@@ -1,6 +1,5 @@
 package info.bunny178.novel.reader.fragment;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,11 +17,7 @@ import java.util.List;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.ViewerActivity;
 import info.bunny178.novel.reader.model.Bookmark;
-import info.bunny178.novel.reader.model.Chapter;
-import info.bunny178.novel.reader.model.Novel;
-import info.bunny178.novel.reader.model.Page;
 import info.bunny178.novel.reader.view.adapter.BookmarkAdapter;
-import info.bunny178.novel.reader.view.adapter.ChapterListAdapter;
 
 /**
  *
@@ -50,7 +45,7 @@ public class BookmarkListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
-        return inflater.inflate(R.layout.fragment_chapter_list, container, false);
+        return inflater.inflate(R.layout.fragment_bookmark_list, container, false);
     }
 
     @Override
@@ -65,7 +60,7 @@ public class BookmarkListFragment extends Fragment {
         List<Bookmark> chapterList = Bookmark.loadBookmarks(getActivity());
         mAdapter.addAll(chapterList);
 
-        ListView listView = (ListView) view.findViewById(R.id.list_chapter);
+        ListView listView = (ListView) view.findViewById(R.id.list_bookmark);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(mItemClickListener);
 
