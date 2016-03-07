@@ -58,6 +58,7 @@
     <string name="warn_library_empty">ライブラリに小説が追加されていません。\n読みたい本を探してダウンロードしよう。</string>
     <string name="warn_genre_list_empty">ジャンルデータがありません。</string>
     <string name="warn_delete_novel_confirm">小説のデータを削除します。</string>
+    <string name="warn_delete_bookmark_confirm">しおりを削除します。</string>
 
     <string name="theme_light">ホワイト</string>
     <string name="theme_dark">ダーク</string>

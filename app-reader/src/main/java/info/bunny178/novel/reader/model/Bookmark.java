@@ -11,6 +11,7 @@ import java.util.List;
 
 import info.bunny178.novel.reader.db.BookmarkTable;
 import info.bunny178.novel.reader.db.ChapterTable;
+import info.bunny178.novel.reader.db.NovelTable;
 
 
 /**
@@ -113,6 +114,12 @@ public class Bookmark extends BaseModel implements BookmarkTable.Columns {
             }
         }
         return bookmarks;
+    }
+
+    public static int deleteBookmark(Context context, int bookmarkId) {
+        ContentResolver resolver = context.getContentResolver();
+        Uri uri = BookmarkTable.CONTENT_URI.buildUpon().appendPath(Integer.toString(bookmarkId)).build();
+        return resolver.delete(uri, null, null);
     }
 
     @Override
