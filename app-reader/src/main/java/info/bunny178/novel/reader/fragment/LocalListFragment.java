@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import info.bunny178.novel.reader.DetailActivity;
+import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.ViewerActivity;
 import info.bunny178.novel.reader.db.NovelTable;
@@ -136,6 +137,8 @@ public class LocalListFragment extends Fragment {
             if (data != null) {
                 int novelId = data.save(getActivity());
                 startViewerActivity(novelId);
+
+                NovelReader.sendEvent("Novel action", data.getTitle(), "Read novel");
             }
         }
     };
@@ -164,6 +167,7 @@ public class LocalListFragment extends Fragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        NovelReader.sendEvent("Novel action", novel.getTitle(), "Delete novel");
                         deleteNovel(novel.getNovelId());
                         createAdapter();
                     }

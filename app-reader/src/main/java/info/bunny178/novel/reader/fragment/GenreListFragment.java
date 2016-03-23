@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Genre;
 import info.bunny178.novel.reader.net.GenreListRequest;
@@ -54,6 +55,7 @@ public class GenreListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        NovelReader.sendScreenName(LOG_TAG);
         return inflater.inflate(R.layout.fragment_genre_list, container, false);
     }
 

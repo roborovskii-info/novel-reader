@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.ViewerActivity;
 import info.bunny178.novel.reader.model.Bookmark;
@@ -48,6 +49,8 @@ public class BookmarkListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        NovelReader.sendScreenName(LOG_TAG);
     }
 
     @Nullable

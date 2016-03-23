@@ -25,6 +25,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.List;
 
+import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Genre;
 import info.bunny178.novel.reader.net.GenreListRequest;
@@ -58,6 +59,7 @@ public class NovelSearchFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
+        NovelReader.sendScreenName(LOG_TAG);
         return inflater.inflate(R.layout.fragment_novel_search, container, false);
     }
 

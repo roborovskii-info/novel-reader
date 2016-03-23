@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 
 import java.util.List;
 
+import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Chapter;
 import info.bunny178.novel.reader.model.Novel;
@@ -49,6 +50,8 @@ public class ChapterListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setResult(Activity.RESULT_CANCELED);
+
+        NovelReader.sendScreenName(LOG_TAG);
     }
 
     @Nullable

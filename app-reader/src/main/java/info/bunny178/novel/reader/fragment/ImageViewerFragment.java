@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -43,6 +44,7 @@ public class ImageViewerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
         setHasOptionsMenu(true);
+        NovelReader.sendScreenName(LOG_TAG);
         return inflater.inflate(R.layout.fragment_image_viewer, container, false);
     }
 

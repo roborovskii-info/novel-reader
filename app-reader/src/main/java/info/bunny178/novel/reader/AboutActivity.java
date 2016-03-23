@@ -17,6 +17,8 @@ import java.io.InputStreamReader;
  */
 public class AboutActivity extends BaseActivity {
 
+    private static final String LOG_TAG = "AboutActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class AboutActivity extends BaseActivity {
             e.printStackTrace();
             licenseView.setText(e.getLocalizedMessage());
         }
+
+        NovelReader.sendScreenName(LOG_TAG);
     }
 
     private String readFromRaw(int resId) throws IOException {

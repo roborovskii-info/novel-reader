@@ -144,6 +144,8 @@ public class ViewerActivity extends BaseActivity {
         }
 
         Log.d(LOG_TAG, "  Last page position : " + mCurrentPosition);
+
+        NovelReader.sendScreenName(LOG_TAG);
     }
 
     @Override

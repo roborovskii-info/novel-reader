@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
+import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.util.PreferenceProvider;
 
@@ -33,7 +34,7 @@ public class SettingsFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.app_settings);
 
         mPreference = new PreferenceProvider(getActivity());
-
+        NovelReader.sendScreenName(LOG_TAG);
         getActivity().setTitle(R.string.settings);
     }
 
