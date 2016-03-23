@@ -63,7 +63,7 @@ android {
                     variant.mergedFlavor.applicationId +
                             "-" + variant.mergedFlavor.versionName +
                             "-" + variant.mergedFlavor.versionCode
-            output.outputFile = new File(file.parent, file.name.replace("app-reader-release.apk", versionInfo + ".apk"))
+            output.outputFile = new File(file.parent, file.name.replace("app-reader-google-release.apk", versionInfo + ".apk"))
         }
     }
 }
