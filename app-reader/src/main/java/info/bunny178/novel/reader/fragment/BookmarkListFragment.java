@@ -126,7 +126,7 @@ public class BookmarkListFragment extends Fragment {
 
         mSelectedBookmark = (Bookmark) o;
         android.view.MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(R.menu.context_local_list, menu);
+        inflater.inflate(R.menu.context_bookmark_list, menu);
     }
 
     @Override
