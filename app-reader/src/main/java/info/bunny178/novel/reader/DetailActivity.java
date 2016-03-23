@@ -96,6 +96,8 @@ public class DetailActivity extends BaseActivity {
         mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
         setUi(STATUS_REQUESTING);
         setupAds();
+
+        NovelReader.sendScreenName(LOG_TAG);
     }
 
     /**
@@ -155,15 +157,20 @@ public class DetailActivity extends BaseActivity {
         switch (itemId) {
             case R.id.menu_open_in_browser:
                 openBrowser(mNovelData);
+                NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Open browser");
                 break;
             case R.id.menu_share:
                 shareNovel(mNovelData);
+                NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Share");
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void handleNovelData() {
+        if (mNovelData == null) {
+            return;
+        }
         /* カバー画像の表示 */
         String url = mNovelData.getLargeImageUrl();
         if (Patterns.WEB_URL.matcher(url).matches()) {
@@ -392,11 +399,15 @@ public class DetailActivity extends BaseActivity {
                 intent.putExtra(DownloadService.EXTRA_NOVEL_ID, mNovelData.getNovelId());
                 intent.putExtra(DownloadService.EXTRA_RECEIVER, mReceiver);
                 startService(intent);
+
+                NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Update novel");
             } else {
                 /* 読む */
                 Intent intent = new Intent(this, ViewerActivity.class);
                 intent.putExtra(ViewerActivity.EXTRA_NOVEL_ID, mNovelData.getNovelId());
                 startActivity(intent);
+
+                NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Read novel");
             }
         } else {
             /* 新規ダウンロード */
@@ -405,6 +416,8 @@ public class DetailActivity extends BaseActivity {
             intent.putExtra(DownloadService.EXTRA_NOVEL_ID, mNovelData.getNovelId());
             intent.putExtra(DownloadService.EXTRA_RECEIVER, mReceiver);
             startService(intent);
+
+            NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Download novel");
         }
     }
 
