@@ -58,12 +58,19 @@ public class DetailActivity extends BaseActivity {
     public static final String EXTRA_NOVEL_ID = "novel_id";
 
     private static final int STATUS_REQUESTING = 0;
+
     private static final int STATUS_UPDATE = 600;
+
     private static final int STATUS_NO_DATA = 100;
+
     private static final int STATUS_PENDING = 190;
+
     private static final int STATUS_RUNNING = 192;
+
     private static final int STATUS_PROVIDING = 197;
+
     private static final int STATUS_SUCCESS = 200;
+
     private static final int STATUS_FILE_ERROR = 492;
 
     private Novel mNovelData;
@@ -73,7 +80,9 @@ public class DetailActivity extends BaseActivity {
     private InterstitialAd mInterstitialAd;
 
     private TextView mProgressView;
+
     private ProgressBar mProgressBar;
+
     private Button mDownloadButton;
 
     private int[] sActionIds = {
@@ -253,6 +262,10 @@ public class DetailActivity extends BaseActivity {
     };
 
     private void shareNovel(Novel novel) {
+        if (novel == null) {
+            Toast.makeText(this, R.string.error_novel_data_is_null, Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.putExtra(Intent.EXTRA_TEXT, novel.getBrowserUrl());
         intent.setType("text/plain");
@@ -260,6 +273,10 @@ public class DetailActivity extends BaseActivity {
     }
 
     private void openBrowser(Novel novel) {
+        if (novel == null) {
+            Toast.makeText(this, R.string.error_novel_data_is_null, Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(novel.getBrowserUrl()));
         startActivity(Intent.createChooser(intent, novel.getTitle()));
     }
