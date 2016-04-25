@@ -9,7 +9,7 @@
     <string name="review_count">評価数</string>
     <string name="rating_average">評価</string>
     <string name="novel_caption">あらすじ</string>
-    <string name="download">ダウンロード</string>]
+    <string name="download">ダウンロード</string>
     <string name="update">アップデート</string>
     <string name="read">読む</string>
     <string name="search">検索</string>
@@ -43,7 +43,7 @@
     <string name="pref_title_line_spacing">行間の間隔</string>
     <string name="pref_title_font_size">フォントのサイズ</string>
     <string name="pref_title_theme">テーマ</string>
-    <string name="pref_title_show_all_content">すべてのコンテンツを表示</string>
+    <string name="pref_title_show_all_content">成人向けのコンテンツを表示</string>
     <string name="pref_title_about">このアプリについて</string>
     <string name="pref_title_fab_position">スクロールボタンの位置</string>
 
