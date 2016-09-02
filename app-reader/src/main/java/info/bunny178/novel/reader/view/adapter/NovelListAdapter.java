@@ -75,6 +75,7 @@ public class NovelListAdapter extends BaseAdapter {
             h.genreView = (TextView) convertView.findViewById(R.id.text_genre);
             h.ratingView = (TextView) convertView.findViewById(R.id.text_rating);
             h.statusView = (TextView) convertView.findViewById(R.id.text_status);
+            h.r18View = (TextView) convertView.findViewById(R.id.text_r18);
             convertView.setTag(h);
         } else {
             h = (ViewHolder) convertView.getTag();
@@ -100,6 +101,12 @@ public class NovelListAdapter extends BaseAdapter {
             } else {
                 h.statusView.setVisibility(View.GONE);
             }
+
+            if (data.getContentRating() == Novel.RATING_ADULT) {
+                h.r18View.setVisibility(View.VISIBLE);
+            } else {
+                h.r18View.setVisibility(View.GONE);
+            }
         }
         return convertView;
     }
@@ -111,5 +118,6 @@ public class NovelListAdapter extends BaseAdapter {
         TextView genreView;
         TextView ratingView;
         TextView statusView;
+        TextView r18View;
     }
 }

@@ -6,11 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".NovelDetailActivity">
+        tools:context=".DetailActivity">
 
     <include
             layout="@layout/toolbar"
-            />
+    />
 
     <FrameLayout
             android:layout_width="match_parent"
@@ -31,36 +31,71 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="@dimen/common_spacing_m">
-                    <ImageView
-                            android:id="@+id/image_cover"
-                            android:layout_width="@dimen/cover_art_width"
-                            android:layout_height="@dimen/cover_art_height"
-                            android:scaleType="fitCenter"
-                            android:background="@color/cover_background"
-                            />
+                    <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                        <ImageView
+                                android:id="@+id/image_cover"
+                                android:layout_width="@dimen/cover_art_width"
+                                android:layout_height="@dimen/cover_art_height"
+                                android:scaleType="center"
+                                android:background="@color/cover_background"
+                        />
+                        <TextView
+                                android:id="@+id/text_status"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/common_spacing_s"
+                                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                                android:background="?colorPrimary"
+                                android:textColor="@color/white"
+                                android:text="@string/status_complete"
+                                android:singleLine="true"
+                                android:layout_gravity="bottom|end"
+                                android:visibility="gone"
+                        />
+
+                        <TextView
+                                android:id="@+id/text_r18"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/common_spacing_s"
+                                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                                android:background="@color/accent"
+                                android:textColor="@color/white"
+                                android:text="@string/r18"
+                                android:singleLine="true"
+                                android:layout_gravity="bottom|start"
+                                android:visibility="gone"
+                        />
+                    </FrameLayout>
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:padding="@dimen/common_spacing_m">
+
                         <TextView
                                 android:id="@+id/text_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                />
+
+                        />
+
                         <TextView
                                 android:id="@+id/text_author"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
+                        />
                         <TextView
                                 android:id="@+id/text_genre"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
+                        />
                     </LinearLayout>
                 </LinearLayout>
                 <!-- ダウンロードしていますとかの情報 -->
@@ -70,7 +105,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        />
+                />
                 <!-- ダウンロードボタン -->
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -81,7 +116,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.0"
-                            />
+                    />
                     <Button
                             android:id="@+id/btn_read"
                             style="@style/Widget.AppCompat.Button.Colored"
@@ -90,12 +125,12 @@
                             android:textColor="@color/white"
                             android:text="@string/download"
                             android:layout_weight="1.0"
-                            />
+                    />
                 </LinearLayout>
 
                 <include
                         layout="@layout/divider"
-                        />
+                />
 
                 <LinearLayout
                         android:layout_width="match_parent"
@@ -115,14 +150,14 @@
                                 android:text="@string/update_date"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textStyle="bold"
-                                />
+                        />
 
                         <TextView
                                 android:id="@+id/text_update_date"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
+                        />
                     </LinearLayout>
                     <LinearLayout
                             android:layout_width="0dp"
@@ -137,14 +172,14 @@
                                 android:text="@string/page_count"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textStyle="bold"
-                                />
+                        />
 
                         <TextView
                                 android:id="@+id/text_page_count"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
+                        />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -164,16 +199,16 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/view_count"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                style="@style/TextAppearance.AppCompat.Subhead"
                                 android:textStyle="bold"
-                                />
+                        />
 
                         <TextView
                                 android:id="@+id/text_view_count"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
+                        />
                     </LinearLayout>
                     <LinearLayout
                             android:layout_width="0dp"
@@ -187,20 +222,20 @@
                                 android:text="@string/review_count"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textStyle="bold"
-                                />
+                        />
 
                         <TextView
                                 android:id="@+id/text_review_count"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
-                                />
+                        />
                     </LinearLayout>
                 </LinearLayout>
 
                 <include
                         layout="@layout/divider"
-                        />
+                />
 
                 <TextView
                         android:id="@+id/text_caption"
@@ -209,7 +244,7 @@
                         android:padding="@dimen/common_spacing_m"
                         android:autoLink="all"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        />
+                />
             </LinearLayout>
         </ScrollView>
         <ProgressBar
@@ -217,6 +252,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                />
+        />
     </FrameLayout>
 </LinearLayout>

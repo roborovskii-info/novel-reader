@@ -112,7 +112,9 @@ public class NovelSearchFragment extends Fragment {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getActivity(), R.string.error_network_error, Toast.LENGTH_SHORT).show();
+                    if(getActivity() != null) {
+                        Toast.makeText(getActivity(), R.string.error_network_error, Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }

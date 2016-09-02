@@ -29,6 +29,16 @@ public class Novel extends BaseModel implements NovelTable.Columns {
 
     private static final String BROWSER_URL_BASE = "http://novel.fc2.com/novel.php?mode=tc&nid=%s";
 
+
+    /** 一般ジャンル */
+    public static final int RATING_EVERYONE = 0;
+
+    /** アダルトジャンル */
+    public static final int RATING_ADULT = 1;
+
+    /** すべてのジャンル */
+    public static final int RATING_ALL = 2;
+
     /**
      * 執筆中を表すステータス
      */

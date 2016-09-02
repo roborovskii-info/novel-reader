@@ -222,7 +222,7 @@ public class NovelListFragment extends Fragment {
         request.setSortKind(mSortKind);
         request.setGenreId(mGenreId);
         request.setAuthorId(mAuthorId);
-        request.setRating(showAll ? NovelListRequest.RATING_ALL : NovelListRequest.RATING_EVERYONE);
+        request.setRating(showAll ? Novel.RATING_ALL : Novel.RATING_EVERYONE);
         request.setSize(ITEM_PER_PAGE);
         request.setPage(mPageNumber);
 
@@ -247,7 +247,7 @@ public class NovelListFragment extends Fragment {
         if (0 < mGenreId) {
             request.setGenreId(mGenreId);
         }
-        request.setRating(showAll ? NovelListRequest.RATING_ALL : NovelListRequest.RATING_EVERYONE);
+        request.setRating(showAll ? Novel.RATING_ALL : Novel.RATING_EVERYONE);
         request.setSize(ITEM_PER_PAGE);
         request.setPage(mPageNumber);
 

@@ -8,6 +8,8 @@ import org.w3c.dom.Text;
 import android.support.annotation.IntDef;
 import android.text.TextUtils;
 
+import info.bunny178.novel.reader.model.Novel;
+
 /**
  * string sort : ソート項目
  *   keyword キーワードの一致数(デフォルト)
@@ -37,9 +39,9 @@ public class NovelSearchRequest extends BaseRequest {
     public static final String PARAM_KEYWORD = "keyword";
 
     @IntDef({
-            RATING_EVERYONE,
-            RATING_ADULT,
-            RATING_ALL
+            Novel.RATING_EVERYONE,
+            Novel.RATING_ADULT,
+            Novel.RATING_ALL
     })
     public @interface RatingCategory {/* NOP */
     }
@@ -47,7 +49,7 @@ public class NovelSearchRequest extends BaseRequest {
     private String mKeyword;
 
     @RatingCategory
-    private int mRating = RATING_EVERYONE;
+    private int mRating = Novel.RATING_EVERYONE;
 
     private String mSortBy;
 
@@ -91,6 +93,8 @@ public class NovelSearchRequest extends BaseRequest {
         if (!TextUtils.isEmpty(mSortOrder)) {
             urlBuilder.addQueryParameter(PARAM_ORDER, mSortOrder);
         }
+
+        urlBuilder.addQueryParameter(PARAM_RATING, String.valueOf(Novel.RATING_ALL));
 
         requestBuilder.url(urlBuilder.build());
         return requestBuilder.build();

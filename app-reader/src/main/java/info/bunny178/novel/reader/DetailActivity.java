@@ -165,12 +165,16 @@ public class DetailActivity extends BaseActivity {
         int itemId = item.getItemId();
         switch (itemId) {
             case R.id.menu_open_in_browser:
-                openBrowser(mNovelData);
-                NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Open browser");
+                if (mNovelData != null) {
+                    openBrowser(mNovelData);
+                    NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Open browser");
+                }
                 break;
             case R.id.menu_share:
-                shareNovel(mNovelData);
-                NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Share");
+                if (mNovelData != null) {
+                    shareNovel(mNovelData);
+                    NovelReader.sendEvent("Novel action", mNovelData.getTitle(), "Share");
+                }
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -356,6 +360,20 @@ public class DetailActivity extends BaseActivity {
     }
 
     private void bindNovelData(Novel novelData) {
+        View statusView = findViewById(R.id.text_status);
+        if (novelData.getNovelStatus() == Novel.STATUS_COMPLETE) {
+            statusView.setVisibility(View.VISIBLE);
+        } else {
+            statusView.setVisibility(View.GONE);
+        }
+
+        View r18View = findViewById(R.id.text_r18);
+        if (novelData.getContentRating() == Novel.RATING_ADULT) {
+            r18View.setVisibility(View.VISIBLE);
+        } else {
+            r18View.setVisibility(View.GONE);
+        }
+
         String title = novelData.getTitle();
         bindTextField(R.id.text_title, title);
 

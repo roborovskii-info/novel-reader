@@ -5,6 +5,8 @@ import com.squareup.okhttp.Request;
 
 import android.support.annotation.IntDef;
 
+import info.bunny178.novel.reader.model.Novel;
+
 /**
  * @author ISHIMARU Sohei on 2015/09/08.
  */
@@ -13,19 +15,10 @@ public abstract class BaseRequest {
     public static final String API_HOST = "novel.fc2.com";
     public static final String API_PATH = "api";
 
-    /** 一般ジャンル */
-    public static final int RATING_EVERYONE = 0;
-
-    /** アダルトジャンル */
-    public static final int RATING_ADULT = 1;
-
-    /** すべてのジャンル */
-    public static final int RATING_ALL = 2;
-
     @IntDef({
-            RATING_EVERYONE,
-            RATING_ADULT,
-            RATING_ALL
+            Novel.RATING_EVERYONE,
+            Novel.RATING_ADULT,
+            Novel.RATING_ALL
     })
     public @interface RatingCategory {/* NOP */}
 

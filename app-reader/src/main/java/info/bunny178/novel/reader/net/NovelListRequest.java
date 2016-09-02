@@ -6,6 +6,8 @@ import com.squareup.okhttp.Request;
 import android.support.annotation.IntDef;
 import android.text.TextUtils;
 
+import info.bunny178.novel.reader.model.Novel;
+
 /**
  * @author ISHIMARU Sohei on 2015/09/08.
  */
@@ -91,8 +93,12 @@ public class NovelListRequest extends BaseRequest {
             urlBuilder.addQueryParameter(PARAM_KIND, SEARCH_BY_GENRE_ID);
             urlBuilder.addQueryParameter(PARAM_ANY_ID, String.valueOf(mGenreId));
         }
-        if (mRating == RATING_ADULT || mRating == RATING_ALL || mRating == RATING_EVERYONE) {
-            urlBuilder.addQueryParameter(PARAM_RATING, Integer.toString(mRating));
+        if (mRating == Novel.RATING_ADULT || mRating == Novel.RATING_ALL || mRating == Novel.RATING_EVERYONE) {
+            if (0 < mNovelId) {
+                urlBuilder.addQueryParameter(PARAM_RATING, Integer.toString(Novel.RATING_ALL));
+            } else {
+                urlBuilder.addQueryParameter(PARAM_RATING, Integer.toString(mRating));
+            }
         }
         if (0 < mSize) {
             urlBuilder.addQueryParameter(PARAM_SIZE, Integer.toString(mSize));

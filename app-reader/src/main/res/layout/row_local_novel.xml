@@ -27,11 +27,25 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/common_spacing_s"
                 android:textAppearance="?android:attr/textAppearanceSmallInverse"
-                android:background="@color/accent"
+                android:background="@color/accent_yellow"
                 android:textColor="@color/white"
                 android:singleLine="true"
                 android:layout_gravity="bottom|end"
-                />
+                android:visibility="gone"
+        />
+        <TextView
+                android:id="@+id/text_r18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/common_spacing_s"
+                android:textAppearance="?android:attr/textAppearanceSmallInverse"
+                android:background="@color/accent"
+                android:textColor="@color/white"
+                android:text="@string/r18"
+                android:singleLine="true"
+                android:layout_gravity="bottom|start"
+                android:visibility="gone"
+        />
     </FrameLayout>
 
     <LinearLayout
