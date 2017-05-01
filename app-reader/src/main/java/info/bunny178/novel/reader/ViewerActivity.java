@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -414,9 +415,9 @@ public class ViewerActivity extends BaseActivity {
     /**
      * ページの中身を表示するアダプタ
      */
-    class NovelPagerAdapter extends PagerAdapter {
+    private class NovelPagerAdapter extends PagerAdapter {
 
-        public Page getPage(int position) {
+        Page getPage(int position) {
             int pageNumber = position + 1;
             Page page = mPageCache.get(pageNumber);
             if (page == null) {
@@ -505,7 +506,7 @@ public class ViewerActivity extends BaseActivity {
                 int accent = getAccentColor();
 
                 /* 次へボタン */
-                ImageButton nextButton = (ImageButton) pageRow.findViewById(R.id.button_next);
+                AppCompatImageButton nextButton = (AppCompatImageButton) pageRow.findViewById(R.id.button_next);
                 nextButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -516,7 +517,7 @@ public class ViewerActivity extends BaseActivity {
                 nextButton.setColorFilter(accent, PorterDuff.Mode.MULTIPLY);
 
                 /* 前へボタン */
-                ImageButton prevButton = (ImageButton) pageRow.findViewById(R.id.button_prev);
+                AppCompatImageButton prevButton = (AppCompatImageButton) pageRow.findViewById(R.id.button_prev);
                 prevButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

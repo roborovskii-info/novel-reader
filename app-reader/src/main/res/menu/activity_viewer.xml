@@ -6,28 +6,28 @@
     <item
             android:id="@+id/menu_chapter_list"
             android:title="@string/chapter_list"
-            android:icon="@drawable/ic_action_action_view_list"
+            android:icon="@drawable/ic_action_view_list"
             android:orderInCategory="100"
             app:showAsAction="ifRoom"
             />
     <item
             android:id="@+id/menu_bookmark"
             android:title="@string/bookmark"
-            android:icon="@drawable/ic_action_action_bookmark"
+            android:icon="@drawable/ic_action_bookmark"
             android:orderInCategory="100"
             app:showAsAction="ifRoom"
             />
     <item
             android:id="@+id/menu_show_details"
             android:title="@string/show_details"
-            android:icon="@drawable/ic_action_action_info_outline"
+            android:icon="@drawable/ic_action_info"
             android:orderInCategory="100"
             app:showAsAction="ifRoom"
             />
     <item
             android:id="@+id/menu_settings"
             android:title="@string/settings"
-            android:icon="@drawable/ic_action_action_settings"
+            android:icon="@drawable/ic_action_settings"
             android:orderInCategory="100"
             app:showAsAction="never"
             />

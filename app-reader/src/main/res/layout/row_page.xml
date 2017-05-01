@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -49,12 +49,12 @@
                 android:orientation="horizontal"
                 >
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/button_prev"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_action_navigation_arrow_back"
+                    app:srcCompat="@drawable/ic_action_arrow_back"
                     />
             <TextView
                     android:id="@+id/text_page"
@@ -64,12 +64,12 @@
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     />
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                     android:id="@+id/button_next"
                     style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_action_navigation_arrow_forward"
+                    app:srcCompat="@drawable/ic_action_arrow_forward"
                     />
         </LinearLayout>
     </LinearLayout>

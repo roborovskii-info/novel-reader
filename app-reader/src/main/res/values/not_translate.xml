@@ -5,7 +5,7 @@
     <string name="interstitial_unit_id">ca-app-pub-4634175106713978/7492457430</string>
 
     <string name="url_google_play">https://play.google.com/store/apps/details?id=info.bunny178.novel.reader</string>
-
+    <string name="url_fc2_novel">http://novel.fc2.com/</string>
     <string-array name="search_sort_entries">
         <item>@string/view_count</item>
         <item>@string/rating_average</item>

@@ -80,8 +80,10 @@ public class BrowseActivity extends BaseActivity {
             }
         }
 
+        /* 広告の設定 */
         setupAds();
 
+        /* レビュー書いてのダイアログ */
         PreferenceProvider pp = new PreferenceProvider(this);
         int launchCount = pp.readInt(R.string.pref_key_launch_count, 0);
         if (0 < launchCount && launchCount % 4 == 0) {
@@ -198,6 +200,8 @@ public class BrowseActivity extends BaseActivity {
                 case R.id.drawer_settings:
                     startSettingsActivity();
                     break;
+                case R.id.drawer_browser:
+                    startFc2Novel();
             }
             mDrawerLayout.closeDrawers();
             return true;
@@ -250,5 +254,11 @@ public class BrowseActivity extends BaseActivity {
         AlertDialog dialog = builder.create();
         dialog.setOwnerActivity(this);
         dialog.show();
+    }
+
+    private void startFc2Novel() {
+        String uri = getString(R.string.url_fc2_novel);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        startActivity(intent);
     }
 }

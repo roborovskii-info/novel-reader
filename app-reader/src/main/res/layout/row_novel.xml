@@ -29,7 +29,7 @@
                 android:textAppearance="?android:attr/textAppearanceSmallInverse"
                 android:background="@color/accent_yellow"
                 android:textColor="@color/white"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:layout_gravity="bottom|end"
                 android:visibility="gone"
                 />
@@ -42,7 +42,7 @@
                 android:background="@color/accent"
                 android:textColor="@color/white"
                 android:text="@string/r18"
-                android:singleLine="true"
+                android:maxLines="1"
                 android:layout_gravity="bottom|start"
                 android:visibility="gone"
         />
@@ -58,28 +58,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:singleLine="true"
+                android:maxLines="1"
                 />
         <TextView
                 android:id="@+id/text_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:singleLine="true"
+                android:maxLines="1"
                 />
         <TextView
                 android:id="@+id/text_genre"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:singleLine="true"
+                android:maxLines="1"
                 />
         <TextView
                 android:id="@+id/text_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:singleLine="true"
+                android:maxLines="1"
                 />
     </LinearLayout>
 </LinearLayout>

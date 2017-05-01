@@ -28,8 +28,8 @@
             android:layout_centerHorizontal="true"
             android:paddingTop="@dimen/common_spacing_s"
             android:paddingBottom="@dimen/common_spacing_s"
-            android:paddingLeft="@dimen/common_spacing_m"
-            android:paddingRight="@dimen/common_spacing_m"
+            android:paddingLeft="@dimen/common_spacing_l"
+            android:paddingRight="@dimen/common_spacing_l"
             />
 
     <!-- シークバー入りのフッター -->
