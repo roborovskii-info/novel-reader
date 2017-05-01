@@ -57,6 +57,8 @@ public class DetailActivity extends BaseActivity {
 
     public static final String EXTRA_NOVEL_ID = "novel_id";
 
+    private static final String PARAM_NOVEL_KEY = "nid";
+
     private static final int STATUS_REQUESTING = 0;
 
     private static final int STATUS_UPDATE = 600;
@@ -143,14 +145,25 @@ public class DetailActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        Bundle args = getIntent().getExtras();
-        if (args == null) {
-            Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
-            finish();
-            return;
+        Uri uri = getIntent().getData();
+        if (uri != null) {
+            String nid = uri.getQueryParameter(PARAM_NOVEL_KEY);
+            if (nid == null || !TextUtils.isDigitsOnly(nid)) {
+                Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+            mNovelId = Integer.parseInt(nid);
+        } else {
+            Bundle args = getIntent().getExtras();
+            if (args == null) {
+                Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+            /* IDから小説データを読み込み */
+            mNovelId = args.getInt(EXTRA_NOVEL_ID);
         }
-        /* IDから小説データを読み込み */
-        mNovelId = args.getInt(EXTRA_NOVEL_ID);
         requestNovel(mNovelId);
     }
 

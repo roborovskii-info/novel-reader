@@ -28,32 +28,42 @@
         </activity>
         <activity
                 android:name=".DetailActivity"
-                android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-                />
+                android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                        android:scheme="http"
+                        android:host="novel.fc2.com"
+                        android:path="/novel.php"/>
+            </intent-filter>
+        </activity>
         <activity
                 android:name=".ViewerActivity"
                 android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-                />
+        />
         <activity
                 android:name=".SingleFragmentActivity"
                 android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
-                />
+        />
         <activity
                 android:name=".AboutActivity"
                 android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
                 android:label="@string/about"
-                />
+        />
         <service
                 android:name=".service.DownloadService"
                 android:exported="false"
-                />
+        />
         <!-- Providers -->
         <provider
                 android:name=".db.NovelDataProvider"
                 android:authorities="info.bunny178.novel.reader"
                 android:enabled="true"
                 android:exported="false"
-                />
+        />
         <meta-data
                 android:name="io.fabric.ApiKey"
                 android:value="20f1d76d72b90387ccae29e481a3c466bb0cb1aa"/>
@@ -63,7 +73,7 @@
                 android:name="com.google.android.gms.ads.AdActivity"
                 android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
                 android:theme="@android:style/Theme.Translucent"
-                />
+        />
     </application>
 
 </manifest>
