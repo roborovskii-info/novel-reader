@@ -14,7 +14,10 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Novel;
 
@@ -68,14 +71,7 @@ public class LocalListAdapter extends BaseAdapter {
         ViewHolder h;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.row_local_novel, parent, false);
-            h = new ViewHolder();
-            h.coverView = (ImageView) convertView.findViewById(R.id.image_cover);
-            h.titleView = (TextView) convertView.findViewById(R.id.text_title);
-            h.authorView = (TextView) convertView.findViewById(R.id.text_author);
-            h.progressView = (TextView) convertView.findViewById(R.id.text_progress);
-            h.pageView = (TextView) convertView.findViewById(R.id.text_page);
-            h.statusView = (TextView) convertView.findViewById(R.id.text_status);
-            h.r18View = (TextView) convertView.findViewById(R.id.text_r18);
+            h = new ViewHolder(convertView);
             convertView.setTag(h);
         } else {
             h = (ViewHolder) convertView.getTag();
@@ -95,7 +91,7 @@ public class LocalListAdapter extends BaseAdapter {
             String pageCount = String.format(pageBase, current + 1, total);
             h.pageView.setText(pageCount);
 
-            String progress = String.format("%.1f", (float) current / (float) total * 100.0f) + "%";
+            String progress = String.format(Locale.JAPAN, "%.1f", (float) current / (float) total * 100.0f) + "%";
             h.progressView.setText(progress);
 
             String url = data.getLargeImageUrl();
@@ -120,12 +116,23 @@ public class LocalListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        @BindView(R.id.image_cover)
         ImageView coverView;
+        @BindView(R.id.text_title)
         TextView titleView;
+        @BindView(R.id.text_author)
         TextView authorView;
+        @BindView(R.id.text_progress)
         TextView progressView;
+        @BindView(R.id.text_page)
         TextView pageView;
+        @BindView(R.id.text_status)
         TextView statusView;
+        @BindView(R.id.text_r18)
         TextView r18View;
+
+        ViewHolder(View itemView) {
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

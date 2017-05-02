@@ -1,14 +1,16 @@
-package info.bunny178.novel.reader;
+package info.bunny178.novel.reader.view;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.os.Build;
 import android.os.Bundle;
 
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import info.bunny178.novel.reader.R;
 
 /**
  * 指定されたFragmentのみをAttachするためのActivity.
@@ -22,14 +24,22 @@ public class SingleFragmentActivity extends BaseActivity {
 
     public static final String EXTRA_FRAGMENT_NAME = "fragment_name";
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "# onCreate(Bundle)");
         setContentView(R.layout.activity_simple_fragment);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mToolbar.setElevation(4.0f);
+        }
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();

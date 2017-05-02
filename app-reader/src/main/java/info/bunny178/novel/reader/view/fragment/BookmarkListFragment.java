@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader.view.fragment;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -14,17 +14,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
-import info.bunny178.novel.reader.ViewerActivity;
+import info.bunny178.novel.reader.view.ViewerActivity;
 import info.bunny178.novel.reader.model.Bookmark;
-import info.bunny178.novel.reader.model.Chapter;
 import info.bunny178.novel.reader.model.Novel;
-import info.bunny178.novel.reader.model.Page;
 import info.bunny178.novel.reader.view.adapter.BookmarkAdapter;
 
 /**
@@ -35,29 +36,33 @@ import info.bunny178.novel.reader.view.adapter.BookmarkAdapter;
  */
 public class BookmarkListFragment extends Fragment {
 
-    private static final String LOG_TAG = "BookmarkListFragment";
+    private static final String LOG_TAG = "BookmarkList";
 
     private BookmarkAdapter mAdapter;
-
     private Bookmark mSelectedBookmark;
 
+    @BindView(R.id.list_bookmark)
+    ListView mListView;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+
+    @BindView(R.id.text_empty)
+    TextView mEmptyView;
+
     public static BookmarkListFragment newInstance() {
-        BookmarkListFragment fragment = new BookmarkListFragment();
-        return fragment;
+        return new BookmarkListFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        NovelReader.sendScreenName(LOG_TAG);
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
-        return inflater.inflate(R.layout.fragment_bookmark_list, container, false);
+        NovelReader.sendScreenName(LOG_TAG);
+        View parent = inflater.inflate(R.layout.fragment_bookmark_list, container, false);
+        ButterKnife.bind(this, parent);
+        return parent;
     }
 
     @Override
@@ -65,16 +70,13 @@ public class BookmarkListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(LOG_TAG, "+ onViewCreated(View, Bundle)");
 
-        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-
         mAdapter = new BookmarkAdapter(getActivity());
 
-        ListView listView = (ListView) view.findViewById(R.id.list_bookmark);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(mItemClickListener);
-        registerForContextMenu(listView);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(mItemClickListener);
+        registerForContextMenu(mListView);
 
-        progressBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
@@ -97,9 +99,9 @@ public class BookmarkListFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
 
         if (mAdapter.isEmpty()) {
-            parent.findViewById(R.id.text_empty).setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.VISIBLE);
         } else {
-            parent.findViewById(R.id.text_empty).setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.GONE);
         }
     }
 
@@ -124,9 +126,7 @@ public class BookmarkListFragment extends Fragment {
             return;
         }
         ListView listView = (ListView) v;
-
         Object o = listView.getItemAtPosition(adapterInfo.position);
-
         mSelectedBookmark = (Bookmark) o;
         android.view.MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.context_bookmark_list, menu);

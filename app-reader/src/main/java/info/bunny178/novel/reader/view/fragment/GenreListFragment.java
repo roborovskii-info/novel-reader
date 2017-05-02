@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader.view.fragment;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -24,6 +24,8 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Genre;
@@ -42,9 +44,14 @@ public class GenreListFragment extends Fragment {
 
     private boolean mRequesting = false;
 
-    private ProgressBar mProgressBar;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
-    private TextView mEmptyView;
+    @BindView(R.id.text_empty)
+    TextView mEmptyView;
+
+    @BindView(R.id.list_genre)
+    ListView mListView;
 
     private ArrayAdapter<Genre> mAdapter;
 
@@ -56,7 +63,9 @@ public class GenreListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         NovelReader.sendScreenName(LOG_TAG);
-        return inflater.inflate(R.layout.fragment_genre_list, container, false);
+        View parent = inflater.inflate(R.layout.fragment_genre_list, container, false);
+        ButterKnife.bind(this, parent);
+        return parent;
     }
 
     @Override
@@ -64,12 +73,10 @@ public class GenreListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(LOG_TAG, "+ onViewCreated(View, Bundle)");
 
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
         mEmptyView = (TextView) view.findViewById(R.id.text_empty);
-        ListView listView = (ListView) view.findViewById(R.id.list_genre);
         mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(mItemClickListener);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(mItemClickListener);
 
         requestGenre();
     }

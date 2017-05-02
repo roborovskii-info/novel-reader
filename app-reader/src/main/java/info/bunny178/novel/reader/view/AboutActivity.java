@@ -1,7 +1,8 @@
-package info.bunny178.novel.reader;
+package info.bunny178.novel.reader.view;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +13,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import info.bunny178.novel.reader.NovelReader;
+import info.bunny178.novel.reader.R;
+
 /**
  * @author ISHIMARU Sohei on 2015/09/15.
  */
@@ -19,24 +25,34 @@ public class AboutActivity extends BaseActivity {
 
     private static final String LOG_TAG = "AboutActivity";
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @BindView(R.id.text_version)
+    TextView mVersionView;
+
+    @BindView(R.id.text_about)
+    TextView mLicenseView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
 
-        TextView versionView = (TextView) findViewById(R.id.text_version);
-        versionView.setText(String.format(getString(R.string.version), getVersionName()));
+        setSupportActionBar(mToolbar);
 
-        TextView licenseView = (TextView) findViewById(R.id.text_about);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mToolbar.setElevation(4.0f);
+        }
 
+        mVersionView.setText(String.format(getString(R.string.version), getVersionName()));
         try {
-            licenseView.setText(readFromRaw(R.raw.licenses));
+            mLicenseView.setText(readFromRaw(R.raw.licenses));
         } catch (IOException e) {
             e.printStackTrace();
-            licenseView.setText(e.getLocalizedMessage());
+            mLicenseView.setText(e.getLocalizedMessage());
         }
 
         NovelReader.sendScreenName(LOG_TAG);

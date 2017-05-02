@@ -5,7 +5,7 @@
         android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
         android:padding="@dimen/common_spacing_m"
-        tools:context=".fragment.NovelSearchFragment">
+        tools:context=".view.fragment.NovelSearchFragment">
 
     <EditText
             android:id="@+id/field_keyword"

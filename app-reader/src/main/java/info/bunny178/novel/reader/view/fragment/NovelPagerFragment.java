@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader.view.fragment;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.net.NovelListRequest;
 
@@ -21,6 +23,12 @@ import info.bunny178.novel.reader.net.NovelListRequest;
  * @author ISHIMARU Sohei on 2015/09/15.
  */
 public class NovelPagerFragment extends Fragment {
+
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
+
+    @BindView(R.id.tab_layout)
+    TabLayout mTabLayout;
 
     public static NovelPagerFragment newInstance() {
         return new NovelPagerFragment();
@@ -31,16 +39,15 @@ public class NovelPagerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View parent = inflater.inflate(R.layout.fragment_novel_pager, container, false);
 
-        ViewPager viewPager = (ViewPager) parent.findViewById(R.id.view_pager);
-        viewPager.setAdapter(new FragmentTabsAdapter(getFragmentManager(), getActivity()));
+        ButterKnife.bind(this, parent);
+        mViewPager.setAdapter(new FragmentTabsAdapter(getFragmentManager(), getActivity()));
 
-        TabLayout tabLayout = (TabLayout) parent.findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
+        mTabLayout.setupWithViewPager(mViewPager);
 
         return parent;
     }
 
-    class FragmentTabsAdapter extends FragmentStatePagerAdapter {
+    private class FragmentTabsAdapter extends FragmentStatePagerAdapter {
 
         private String[] sSortValues = {
                 NovelListRequest.SORT_WEEKLY_RANKING,

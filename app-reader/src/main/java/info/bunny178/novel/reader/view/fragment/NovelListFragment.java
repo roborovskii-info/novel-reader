@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader.view.fragment;
 
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.Request;
@@ -24,10 +24,8 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -35,7 +33,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import info.bunny178.novel.reader.DetailActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import info.bunny178.novel.reader.view.DetailActivity;
 import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Novel;
@@ -71,14 +71,18 @@ public class NovelListFragment extends Fragment {
      */
     public static final String ARGS_ORDER = "order";
 
-
     private static final int ITEM_PER_PAGE = 20;
 
     private int mGenreId;
+
     private int mAuthorId;
+
     private String mSortKind;
+
     private String mKeyword;
+
     private String mSort;
+
     private String mOrder;
 
     private int mTotalItem;
@@ -91,9 +95,14 @@ public class NovelListFragment extends Fragment {
 
     private boolean mRequesting = false;
 
-    private ProgressBar mProgressBar;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
-    private View mEmptyView;
+    @BindView(R.id.container_empty)
+    View mEmptyView;
+
+    @BindView(R.id.list_novel)
+    ListView mListView;
 
     private Novel mSelectedNovel;
 
@@ -150,7 +159,9 @@ public class NovelListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
         NovelReader.sendScreenName(LOG_TAG);
-        return inflater.inflate(R.layout.fragment_novel_list, container, false);
+        View parent = inflater.inflate(R.layout.fragment_novel_list, container, false);
+        ButterKnife.bind(this, parent);
+        return parent;
     }
 
     @Override
@@ -171,12 +182,9 @@ public class NovelListFragment extends Fragment {
 
         mAdapter = new NovelListAdapter(getActivity());
 
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        mEmptyView = view.findViewById(R.id.container_empty);
-        ListView listView = (ListView) view.findViewById(R.id.list_novel);
-        listView.setAdapter(mAdapter);
-        listView.setOnScrollListener(mScrollListener);
-        listView.setOnItemClickListener(mItemClickListener);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnScrollListener(mScrollListener);
+        mListView.setOnItemClickListener(mItemClickListener);
 
         if (TextUtils.isEmpty(mKeyword)) {
             requestNovelList();

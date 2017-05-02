@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader;
+package info.bunny178.novel.reader.view;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.NavigationView.OnNavigationItemSelectedListener;
@@ -16,23 +17,25 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 
-import java.io.File;
-
-import info.bunny178.novel.reader.fragment.BookmarkListFragment;
-import info.bunny178.novel.reader.fragment.LocalListFragment;
-import info.bunny178.novel.reader.fragment.NovelPagerFragment;
-import info.bunny178.novel.reader.fragment.NovelSearchFragment;
-import info.bunny178.novel.reader.fragment.SettingsFragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import info.bunny178.novel.reader.R;
+import info.bunny178.novel.reader.view.fragment.BookmarkListFragment;
+import info.bunny178.novel.reader.view.fragment.LocalListFragment;
+import info.bunny178.novel.reader.view.fragment.NovelPagerFragment;
+import info.bunny178.novel.reader.view.fragment.NovelSearchFragment;
+import info.bunny178.novel.reader.view.fragment.SettingsFragment;
 import info.bunny178.novel.reader.model.Novel;
 import info.bunny178.util.PreferenceProvider;
 import io.fabric.sdk.android.Fabric;
@@ -47,7 +50,22 @@ public class BrowseActivity extends BaseActivity {
 
     private static final String LOG_TAG = "BrowseActivity";
 
-    private DrawerLayout mDrawerLayout;
+    /**
+     * URLに付与される小説ID。ブラウザなどから起動された場合に使用する。
+     */
+    private static final String QUERY_NOVEL_ID = "nid";
+
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+
+    @BindView(R.id.navigation_view)
+    NavigationView mNavigationView;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @BindView(R.id.ad_view)
+    AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +73,16 @@ public class BrowseActivity extends BaseActivity {
         Fabric.with(this, new Crashlytics());
         Log.d(LOG_TAG, "# onCreate(Bundle)");
         setContentView(R.layout.activity_browse);
+        ButterKnife.bind(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        if (navigationView != null) {
-            setupDrawerContent(navigationView);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mToolbar.setElevation(4.0f);
+        }
+
+        if (mNavigationView != null) {
+            setupDrawerContent(mNavigationView);
         }
 
         ActionBar ab = getSupportActionBar();
@@ -83,18 +103,23 @@ public class BrowseActivity extends BaseActivity {
         /* 広告の設定 */
         setupAds();
 
-        /* レビュー書いてのダイアログ */
-        PreferenceProvider pp = new PreferenceProvider(this);
-        int launchCount = pp.readInt(R.string.pref_key_launch_count, 0);
-        if (0 < launchCount && launchCount % 4 == 0) {
-            boolean review = pp.readBoolean(R.string.pref_key_write_review, false);
-            if (!review) {
-                showReviewDialog();
+        /* 起動回数でレビュー */
+        handleLaunchCount();
+
+        /* URLから起動した場合 */
+        Uri uri = getIntent().getData();
+        if (uri != null) {
+            String nid = uri.getQueryParameter(QUERY_NOVEL_ID);
+            if (nid == null || !TextUtils.isDigitsOnly(nid)) {
+                Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
+                finish();
+                return;
             }
+            int novelId = Integer.parseInt(nid);
+            startNovelDetailActivity(novelId);
         }
-        launchCount++;
-        pp.writeInt(R.string.pref_key_launch_count, launchCount);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -126,6 +151,20 @@ public class BrowseActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void handleLaunchCount() {
+        /* レビュー書いてのダイアログ */
+        PreferenceProvider pp = new PreferenceProvider(this);
+        int launchCount = pp.readInt(R.string.pref_key_launch_count, 0);
+        if (0 < launchCount && launchCount % 4 == 0) {
+            boolean review = pp.readBoolean(R.string.pref_key_write_review, false);
+            if (!review) {
+                showReviewDialog();
+            }
+        }
+        launchCount++;
+        pp.writeInt(R.string.pref_key_launch_count, launchCount);
+    }
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener(mNavigationListener);
         View header = navigationView.inflateHeaderView(R.layout.navigation_header);
@@ -142,7 +181,8 @@ public class BrowseActivity extends BaseActivity {
 
         int primary = super.getPrimaryColor();
         if (header != null) {
-            header.setBackgroundColor(primary);
+            ImageView headerImage = (ImageView) header.findViewById(R.id.image_header);
+            headerImage.setColorFilter(primary, PorterDuff.Mode.OVERLAY);
         } else {
             Log.e(LOG_TAG, "  Header is null");
         }
@@ -158,7 +198,6 @@ public class BrowseActivity extends BaseActivity {
                 "369C931A07D20553",
         };
 
-        AdView mAdView = (AdView) findViewById(R.id.ad_view);
         AdRequest.Builder builder = new AdRequest.Builder();
         for (String deviceId : deviceIds) {
             builder.addTestDevice(deviceId);
@@ -227,6 +266,12 @@ public class BrowseActivity extends BaseActivity {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.replace(R.id.container_main, fragment);
         ft.commit();
+    }
+
+    private void startNovelDetailActivity(int novelId) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra(DetailActivity.EXTRA_NOVEL_ID, novelId);
+        startActivity(intent);
     }
 
     private void showReviewDialog() {

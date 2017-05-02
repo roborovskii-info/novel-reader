@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader.view.fragment;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;

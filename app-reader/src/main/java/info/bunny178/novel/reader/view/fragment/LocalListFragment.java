@@ -1,13 +1,11 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader.view.fragment;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -17,14 +15,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
-import info.bunny178.novel.reader.DetailActivity;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import info.bunny178.novel.reader.view.DetailActivity;
 import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
-import info.bunny178.novel.reader.ViewerActivity;
+import info.bunny178.novel.reader.view.ViewerActivity;
 import info.bunny178.novel.reader.db.NovelTable;
 import info.bunny178.novel.reader.model.Chapter;
 import info.bunny178.novel.reader.model.Novel;
@@ -42,7 +43,14 @@ public class LocalListFragment extends Fragment {
 
     private Novel mSelectedNovel;
 
-    private ProgressBar mProgressBar;
+    @BindView(R.id.list_novel)
+    ListView mListView;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+
+    @BindView(R.id.text_empty)
+    TextView mEmptyView;
 
     public static LocalListFragment newInstance() {
         return new LocalListFragment();
@@ -52,7 +60,9 @@ public class LocalListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
-        return inflater.inflate(R.layout.fragment_local_list, container, false);
+        View parent = inflater.inflate(R.layout.fragment_local_list, container, false);
+        ButterKnife.bind(this, parent);
+        return parent;
     }
 
     @Override
@@ -60,14 +70,12 @@ public class LocalListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(LOG_TAG, "+ onViewCreated(View, Bundle)");
 
-        mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
         mProgressBar.setVisibility(View.VISIBLE);
 
         mAdapter = new LocalListAdapter(getActivity());
-        ListView listView = (ListView) view.findViewById(R.id.list_novel);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(mItemClickListener);
-        registerForContextMenu(listView);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(mItemClickListener);
+        registerForContextMenu(mListView);
     }
 
     @Override
@@ -124,9 +132,9 @@ public class LocalListFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
 
         if (mAdapter.isEmpty()) {
-            parent.findViewById(R.id.container_empty).setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.VISIBLE);
         } else {
-            parent.findViewById(R.id.container_empty).setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.GONE);
         }
     }
 

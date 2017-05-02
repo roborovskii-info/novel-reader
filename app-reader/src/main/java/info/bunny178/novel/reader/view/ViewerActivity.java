@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader;
+package info.bunny178.novel.reader.view;
 
 import com.squareup.picasso.Picasso;
 
@@ -10,6 +10,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -25,16 +26,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import info.bunny178.novel.reader.NovelReader;
+import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.db.NovelTable;
-import info.bunny178.novel.reader.fragment.ChapterListFragment;
-import info.bunny178.novel.reader.fragment.ImageViewerFragment;
-import info.bunny178.novel.reader.fragment.SettingsFragment;
+import info.bunny178.novel.reader.view.fragment.ChapterListFragment;
+import info.bunny178.novel.reader.view.fragment.ImageViewerFragment;
+import info.bunny178.novel.reader.view.fragment.SettingsFragment;
 import info.bunny178.novel.reader.model.Bookmark;
 import info.bunny178.novel.reader.model.Chapter;
 import info.bunny178.novel.reader.model.Novel;
@@ -66,15 +70,20 @@ public class ViewerActivity extends BaseActivity {
 
     private Novel mNovel;
 
-    private ViewPager mViewPager;
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
 
-    private SeekBar mSeekBar;
+    @BindView(R.id.seek_page)
+    SeekBar mSeekBar;
 
-    private TextView mPageView;
+    @BindView(R.id.text_page_count)
+    TextView mPageView;
 
-    private Toolbar mToolbar;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
-    private View mFooterView;
+    @BindView(R.id.container_footer)
+    View mFooterView;
 
     private NovelPagerAdapter mAdapter;
 
@@ -94,8 +103,13 @@ public class ViewerActivity extends BaseActivity {
 
         setContentView(R.layout.activity_viewer);
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
+
         setSupportActionBar(mToolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mToolbar.setElevation(4.0f);
+        }
 
         int novelId = getIntent().getIntExtra(EXTRA_NOVEL_ID, -1);
         if (0 < novelId) {
@@ -113,16 +127,12 @@ public class ViewerActivity extends BaseActivity {
 
         mAdapter = new NovelPagerAdapter();
 
-        mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mViewPager.setPageTransformer(true, new DepthPageTransformer());
         mViewPager.setAdapter(mAdapter);
 
-        mSeekBar = (SeekBar) findViewById(R.id.seek_page);
         mSeekBar.setOnSeekBarChangeListener(mOnSeekBarChangeListener);
         mSeekBar.setMax(mNovel.getPageCount() - 1);
 
-        mPageView = (TextView) findViewById(R.id.text_page_count);
-        mFooterView = findViewById(R.id.container_footer);
         Drawable drawable = mToolbar.getBackground();
         mFooterView.setBackgroundColor(((ColorDrawable) drawable).getColor());
 
@@ -452,81 +462,77 @@ public class ViewerActivity extends BaseActivity {
             } else {
                 Log.v(LOG_TAG, "  Page cache hit ! " + position);
             }
-            if (page != null) {
-                mPageCache.put(pageNumber, page);
-                /* ヘッダーの色変更 */
-                View header = pageRow.findViewById(R.id.container_header);
-                header.setBackgroundColor(getPrimaryColor());
-
-                /* チャプター表示 */
-                TextView chapterView = (TextView) pageRow.findViewById(R.id.text_chapter);
-                String chapterTitle = mChapterCache.get(page.getChapterId());
-                if (TextUtils.isEmpty(chapterTitle)) {
-                    Chapter chapter = Chapter.load(ViewerActivity.this, page.getChapterId());
-                    if (chapter != null) {
-                        chapterTitle = chapter.toString();
-                        mChapterCache.put(page.getChapterId(), chapterTitle);
-                    } else {
-                        chapterTitle = mNovel.getTitle();
-                    }
-                }
-                chapterView.setText(chapterTitle);
-
-                /* 本文表示 */
-                String body = page.getPageBody();
-                if (!TextUtils.isEmpty(body)) {
-                    TextView bodyView = (TextView) pageRow.findViewById(R.id.text_body);
-                    bodyView.setTextSize(mFontSize);
-                    bodyView.setLineSpacing(bodyView.getTextSize(), mLineSpacing);
-                    bodyView.setText(Html.fromHtml(body));
-                    bodyView.setOnClickListener(mPageTapListener);
-                }
-
-                /* 挿絵の表示 */
-                final String url = page.getLargeImageUrl();
-                ImageView artView = (ImageView) pageRow.findViewById(R.id.image_artwork);
-                if (TextUtils.isEmpty(url)) {
-                    artView.setVisibility(View.GONE);
-                } else {
-                    Picasso.with(ViewerActivity.this).load(url).into(artView);
-                    artView.setVisibility(View.VISIBLE);
-                    artView.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            attachImageViewerFragment(url);
-                        }
-                    });
-                }
-
-                /* ページ番号表記 */
-                TextView pageView = (TextView) pageRow.findViewById(R.id.text_page);
-                pageView.setText(String.format(getString(R.string.page_unit), pageNumber));
-
-                int accent = getAccentColor();
-
-                /* 次へボタン */
-                AppCompatImageButton nextButton = (AppCompatImageButton) pageRow.findViewById(R.id.button_next);
-                nextButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
-                    }
-                });
-                nextButton.setEnabled(pageNumber < mNovel.getPageCount());
-                nextButton.setColorFilter(accent, PorterDuff.Mode.MULTIPLY);
-
-                /* 前へボタン */
-                AppCompatImageButton prevButton = (AppCompatImageButton) pageRow.findViewById(R.id.button_prev);
-                prevButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
-                    }
-                });
-                prevButton.setEnabled(1 < pageNumber);
-                prevButton.setColorFilter(accent, PorterDuff.Mode.MULTIPLY);
+            if (page == null) {
+                return pageRow;
             }
+
+            ViewHolder holder = new ViewHolder(pageRow);
+            mPageCache.put(pageNumber, page);
+            /* ヘッダーの色変更 */
+            holder.headerView.setBackgroundColor(getPrimaryColor());
+
+            /* チャプター表示 */
+            String chapterTitle = mChapterCache.get(page.getChapterId());
+            if (TextUtils.isEmpty(chapterTitle)) {
+                Chapter chapter = Chapter.load(ViewerActivity.this, page.getChapterId());
+                if (chapter != null) {
+                    chapterTitle = chapter.toString();
+                    mChapterCache.put(page.getChapterId(), chapterTitle);
+                } else {
+                    chapterTitle = mNovel.getTitle();
+                }
+            }
+            holder.chapterView.setText(chapterTitle);
+
+            /* 本文表示 */
+            String body = page.getPageBody();
+            if (!TextUtils.isEmpty(body)) {
+                holder.bodyView.setTextSize(mFontSize);
+                holder.bodyView.setLineSpacing(holder.bodyView.getTextSize(), mLineSpacing);
+                holder.bodyView.setText(Html.fromHtml(body));
+                holder.bodyView.setOnClickListener(mPageTapListener);
+            }
+
+            /* 挿絵の表示 */
+            final String url = page.getLargeImageUrl();
+            if (TextUtils.isEmpty(url)) {
+                holder.artView.setVisibility(View.GONE);
+            } else {
+                Picasso.with(ViewerActivity.this).load(url).into(holder.artView);
+                holder.artView.setVisibility(View.VISIBLE);
+                holder.artView.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        attachImageViewerFragment(url);
+                    }
+                });
+            }
+
+            /* ページ番号表記 */
+            holder.pageView.setText(String.format(getString(R.string.page_unit), pageNumber));
+
+            int accent = getAccentColor();
+
+            /* 次へボタン */
+            holder.nextButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1, true);
+                }
+            });
+            holder.nextButton.setEnabled(pageNumber < mNovel.getPageCount());
+            holder.nextButton.setColorFilter(accent, PorterDuff.Mode.MULTIPLY);
+
+            /* 前へボタン */
+            holder.prevButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1, true);
+                }
+            });
+            holder.prevButton.setEnabled(1 < pageNumber);
+            holder.prevButton.setColorFilter(accent, PorterDuff.Mode.MULTIPLY);
 
             return pageRow;
         }
@@ -545,6 +551,34 @@ public class ViewerActivity extends BaseActivity {
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view.equals(object);
+        }
+    }
+
+    class ViewHolder {
+
+        @BindView(R.id.container_header)
+        View headerView;
+
+        @BindView(R.id.text_chapter)
+        TextView chapterView;
+
+        @BindView(R.id.text_body)
+        TextView bodyView;
+
+        @BindView(R.id.image_artwork)
+        ImageView artView;
+
+        @BindView(R.id.text_page)
+        TextView pageView;
+
+        @BindView(R.id.button_next)
+        AppCompatImageButton nextButton;
+
+        @BindView(R.id.button_prev)
+        AppCompatImageButton prevButton;
+
+        ViewHolder(View itemView) {
+            ButterKnife.bind(this, itemView);
         }
     }
 

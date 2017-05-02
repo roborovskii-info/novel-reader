@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader.view.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -12,9 +12,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Chapter;
@@ -38,6 +41,16 @@ public class ChapterListFragment extends Fragment {
 
     private ChapterListAdapter mAdapter;
 
+
+    @BindView(R.id.list_chapter)
+    ListView mListView;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+
+    @BindView(R.id.text_empty)
+    TextView mEmptyView;
+
     public static ChapterListFragment newInstance(int novelId) {
         Bundle args = new Bundle(1);
         args.putInt(ARGS_NOVEL_ID, novelId);
@@ -58,16 +71,15 @@ public class ChapterListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
-        return inflater.inflate(R.layout.fragment_chapter_list, container, false);
+        View parent =  inflater.inflate(R.layout.fragment_chapter_list, container, false);
+        ButterKnife.bind(this, parent);
+        return parent;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d(LOG_TAG, "+ onViewCreated(View, Bundle)");
-
-        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-
         mAdapter = new ChapterListAdapter(getActivity());
 
         int novelId = getArguments().getInt(ARGS_NOVEL_ID);
@@ -80,16 +92,15 @@ public class ChapterListFragment extends Fragment {
         List<Chapter> chapterList = Chapter.loadChapters(getActivity(), novelId);
         mAdapter.addAll(chapterList);
 
-        ListView listView = (ListView) view.findViewById(R.id.list_chapter);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(mItemClickListener);
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(mItemClickListener);
 
         if (chapterList.isEmpty()) {
-            view.findViewById(R.id.text_empty).setVisibility(View.VISIBLE);
+            mEmptyView.setVisibility(View.VISIBLE);
         } else {
-            view.findViewById(R.id.text_empty).setVisibility(View.GONE);
+            mEmptyView.setVisibility(View.GONE);
         }
-        progressBar.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
     }
 
     private AdapterView.OnItemClickListener mItemClickListener = new AdapterView.OnItemClickListener() {

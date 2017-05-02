@@ -14,6 +14,7 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
 
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 25
@@ -73,12 +74,17 @@ dependencies {
     /* OkHttp : An HTTP & SPDY client for Android and Java applications. */
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    /* PhotoView */
     compile 'com.commit451:PhotoView:1.2.4'
     /* Simple : Simple is a high performance XML serialization library. */
     compile('org.simpleframework:simple-xml:2.7.1') {
         exclude module: 'stax-api'
         exclude module: 'xpp3'
     }
+    /* butter knife */
+    apt 'com.jakewharton:butterknife-compiler:8.1.0'
+    compile 'com.jakewharton:butterknife:8.1.0'
+    /* Fabric */
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
         transitive = true;
     }

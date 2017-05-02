@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader;
+package info.bunny178.novel.reader.view;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -15,11 +15,11 @@ import org.simpleframework.xml.transform.RegistryMatcher;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.text.TextUtils;
@@ -28,7 +28,6 @@ import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -43,6 +42,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import info.bunny178.novel.reader.NovelReader;
+import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Novel;
 
 import info.bunny178.novel.reader.net.NovelListRequest;
@@ -55,9 +59,10 @@ public class DetailActivity extends BaseActivity {
 
     private static final String LOG_TAG = "DetailActivity";
 
+    /**
+     * Intentに付与される小説ID
+     */
     public static final String EXTRA_NOVEL_ID = "novel_id";
-
-    private static final String PARAM_NOVEL_KEY = "nid";
 
     private static final int STATUS_REQUESTING = 0;
 
@@ -81,30 +86,40 @@ public class DetailActivity extends BaseActivity {
 
     private InterstitialAd mInterstitialAd;
 
-    private TextView mProgressView;
+    @BindView(R.id.text_progress)
+    TextView mProgressView;
 
-    private ProgressBar mProgressBar;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
-    private Button mDownloadButton;
+    @BindView(R.id.btn_read)
+    Button mDownloadButton;
 
-    private int[] sActionIds = {
-            R.id.btn_read,
-    };
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @BindView(R.id.image_cover)
+    ImageView mCoverImage;
+
+    @BindView(R.id.text_r18)
+    TextView mR18View;
+
+    @BindView(R.id.text_status)
+    TextView mStatusView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_novel_detail);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        ButterKnife.bind(this);
 
-        for (int id : sActionIds) {
-            findViewById(id).setOnClickListener(mOnClickListener);
+        setSupportActionBar(mToolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mToolbar.setElevation(4.0f);
         }
-        mProgressView = (TextView) findViewById(R.id.text_progress);
-        mDownloadButton = (Button) findViewById(R.id.btn_read);
-        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+
         setUi(STATUS_REQUESTING);
         setupAds();
 
@@ -144,26 +159,14 @@ public class DetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        Uri uri = getIntent().getData();
-        if (uri != null) {
-            String nid = uri.getQueryParameter(PARAM_NOVEL_KEY);
-            if (nid == null || !TextUtils.isDigitsOnly(nid)) {
-                Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
-                finish();
-                return;
-            }
-            mNovelId = Integer.parseInt(nid);
-        } else {
-            Bundle args = getIntent().getExtras();
-            if (args == null) {
-                Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
-                finish();
-                return;
-            }
-            /* IDから小説データを読み込み */
-            mNovelId = args.getInt(EXTRA_NOVEL_ID);
+        Bundle args = getIntent().getExtras();
+        if (args == null) {
+            Toast.makeText(this, R.string.error_novel_not_found, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
+            /* IDから小説データを読み込み */
+        mNovelId = args.getInt(EXTRA_NOVEL_ID);
         requestNovel(mNovelId);
     }
 
@@ -301,8 +304,7 @@ public class DetailActivity extends BaseActivity {
     private void displayCoverImage(String url) {
         Log.d(LOG_TAG, "- displayCoverImage(String)");
         Log.d(LOG_TAG, "  URL : " + url);
-        ImageView imageView = (ImageView) findViewById(R.id.image_cover);
-        Picasso.with(this).load(url).into(imageView);
+        Picasso.with(this).load(url).into(mCoverImage);
     }
 
     private void setUi(int status) {
@@ -373,18 +375,16 @@ public class DetailActivity extends BaseActivity {
     }
 
     private void bindNovelData(Novel novelData) {
-        View statusView = findViewById(R.id.text_status);
         if (novelData.getNovelStatus() == Novel.STATUS_COMPLETE) {
-            statusView.setVisibility(View.VISIBLE);
+            mStatusView.setVisibility(View.VISIBLE);
         } else {
-            statusView.setVisibility(View.GONE);
+            mStatusView.setVisibility(View.GONE);
         }
 
-        View r18View = findViewById(R.id.text_r18);
         if (novelData.getContentRating() == Novel.RATING_ADULT) {
-            r18View.setVisibility(View.VISIBLE);
+            mR18View.setVisibility(View.VISIBLE);
         } else {
-            r18View.setVisibility(View.GONE);
+            mR18View.setVisibility(View.GONE);
         }
 
         String title = novelData.getTitle();
@@ -396,13 +396,13 @@ public class DetailActivity extends BaseActivity {
         String genre = novelData.getGenreName();
         bindTextField(R.id.text_genre, genre);
 
-        String pageCount = String.format("%1$,3d", novelData.getPageCount());
+        String pageCount = String.format(Locale.JAPAN, "%1$,3d", novelData.getPageCount());
         bindTextField(R.id.text_page_count, pageCount);
 
         String rating = novelData.getRatingText();
         bindTextField(R.id.text_review_count, rating);
 
-        String viewCount = String.format("%1$,3d", novelData.getViewCount());
+        String viewCount = String.format(Locale.JAPAN, "%1$,3d", novelData.getViewCount());
         bindTextField(R.id.text_view_count, viewCount);
 
         String updateDate = novelData.getLocalizedUpdateDate(this);
@@ -419,21 +419,14 @@ public class DetailActivity extends BaseActivity {
         tv.setText(text);
     }
 
-    private OnClickListener mOnClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            int id = v.getId();
-            switch (id) {
-                case R.id.btn_read:
-                    if (mInterstitialAd.isLoaded()) {
-                        mInterstitialAd.show();
-                    } else {
-                        onReadButtonClicked();
-                    }
-                    break;
-            }
+    @OnClick(R.id.btn_read)
+    void onDownloadButtonClicked() {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            onReadButtonClicked();
         }
-    };
+    }
 
     private void onReadButtonClicked() {
         Novel novelData = Novel.loadNovel(this, mNovelId);

@@ -15,6 +15,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Novel;
 
@@ -68,14 +70,7 @@ public class NovelListAdapter extends BaseAdapter {
         ViewHolder h;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.row_novel, parent, false);
-            h = new ViewHolder();
-            h.coverView = (ImageView) convertView.findViewById(R.id.image_cover);
-            h.titleView = (TextView) convertView.findViewById(R.id.text_title);
-            h.authorView = (TextView) convertView.findViewById(R.id.text_author);
-            h.genreView = (TextView) convertView.findViewById(R.id.text_genre);
-            h.ratingView = (TextView) convertView.findViewById(R.id.text_rating);
-            h.statusView = (TextView) convertView.findViewById(R.id.text_status);
-            h.r18View = (TextView) convertView.findViewById(R.id.text_r18);
+            h = new ViewHolder(convertView);
             convertView.setTag(h);
         } else {
             h = (ViewHolder) convertView.getTag();
@@ -112,12 +107,23 @@ public class NovelListAdapter extends BaseAdapter {
     }
 
     class ViewHolder {
+        @BindView(R.id.image_cover)
         ImageView coverView;
+        @BindView(R.id.text_title)
         TextView titleView;
+        @BindView(R.id.text_author)
         TextView authorView;
+        @BindView(R.id.text_genre)
         TextView genreView;
+        @BindView(R.id.text_rating)
         TextView ratingView;
+        @BindView(R.id.text_status)
         TextView statusView;
+        @BindView(R.id.text_r18)
         TextView r18View;
+
+        ViewHolder(View itemView) {
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

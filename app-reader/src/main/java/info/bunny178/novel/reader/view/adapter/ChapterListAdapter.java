@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Chapter;
 
@@ -23,6 +25,7 @@ public class ChapterListAdapter extends BaseAdapter {
     private List<Chapter> mDataList;
 
     private Context mContext;
+
     private LayoutInflater mInflater;
 
     private int[] mAccentColors;
@@ -31,7 +34,6 @@ public class ChapterListAdapter extends BaseAdapter {
         mContext = context;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mDataList = new ArrayList<>();
-
 
         int[] colorIds = {
                 R.color.list_accent_1,
@@ -86,10 +88,7 @@ public class ChapterListAdapter extends BaseAdapter {
         ViewHolder h;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.row_chapter, parent, false);
-            h = new ViewHolder();
-            h.numberView = (TextView) convertView.findViewById(R.id.text_chapter_number);
-            h.titleView = (TextView) convertView.findViewById(R.id.text_title);
-            h.pageView = (TextView) convertView.findViewById(R.id.text_page);
+            h = new ViewHolder(convertView);
             convertView.setTag(h);
         } else {
             h = (ViewHolder) convertView.getTag();
@@ -109,9 +108,19 @@ public class ChapterListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class ViewHolder {
+    class ViewHolder {
+
+        @BindView(R.id.text_chapter_number)
         TextView numberView;
+
+        @BindView(R.id.text_title)
         TextView titleView;
+
+        @BindView(R.id.text_page)
         TextView pageView;
+
+        ViewHolder(View itemView) {
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

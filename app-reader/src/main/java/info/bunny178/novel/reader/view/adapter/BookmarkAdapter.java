@@ -12,6 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.R;
 import info.bunny178.novel.reader.model.Bookmark;
 import info.bunny178.novel.reader.model.Novel;
@@ -69,10 +71,7 @@ public class BookmarkAdapter extends BaseAdapter {
         ViewHolder h;
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.row_bookmark, parent, false);
-            h = new ViewHolder();
-            h.numberView = (TextView) convertView.findViewById(R.id.text_page_number);
-            h.titleView = (TextView) convertView.findViewById(R.id.text_title);
-            h.bodyView = (TextView) convertView.findViewById(R.id.text_body);
+            h = new ViewHolder(convertView);
             convertView.setTag(h);
         } else {
             h = (ViewHolder) convertView.getTag();
@@ -94,12 +93,18 @@ public class BookmarkAdapter extends BaseAdapter {
         return convertView;
     }
 
-    static class ViewHolder {
-
+    class ViewHolder {
+        @BindView(R.id.text_page_number)
         TextView numberView;
 
+        @BindView(R.id.text_title)
         TextView titleView;
 
+        @BindView(R.id.text_body)
         TextView bodyView;
+
+        ViewHolder(View itemView) {
+            ButterKnife.bind(this, itemView);
+        }
     }
 }

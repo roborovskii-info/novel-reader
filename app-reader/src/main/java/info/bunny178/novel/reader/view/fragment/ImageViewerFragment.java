@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader.fragment;
+package info.bunny178.novel.reader.view.fragment;
 
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import info.bunny178.novel.reader.NovelReader;
 import info.bunny178.novel.reader.R;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -32,6 +34,12 @@ public class ImageViewerFragment extends Fragment {
 
     private PhotoViewAttacher mAttacher;
 
+    @BindView(R.id.image_content)
+    ImageView mImageView;
+
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
+
     public static ImageViewerFragment newInstance(String url) {
         ImageViewerFragment fragment = new ImageViewerFragment();
         Bundle args = new Bundle(1);
@@ -45,7 +53,9 @@ public class ImageViewerFragment extends Fragment {
         Log.d(LOG_TAG, "+ onCreateView(LayoutInflater, ViewGroup, Bundle)");
         setHasOptionsMenu(true);
         NovelReader.sendScreenName(LOG_TAG);
-        return inflater.inflate(R.layout.fragment_image_viewer, container, false);
+        View parent =  inflater.inflate(R.layout.fragment_image_viewer, container, false);
+        ButterKnife.bind(this, parent);
+        return parent;
     }
 
     @Override
@@ -63,18 +73,16 @@ public class ImageViewerFragment extends Fragment {
             getActivity().finish();
             return;
         }
-        ProgressBar progressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-        progressBar.setVisibility(View.VISIBLE);
-        final ImageView imageView = (ImageView) view.findViewById(R.id.image_content);
+        mProgressBar.setVisibility(View.VISIBLE);
         Picasso.with(getActivity())
                 .load(imageUrl)
-                .into(imageView, new Callback() {
+                .into(mImageView, new Callback() {
                     @Override
                     public void onSuccess() {
                         if (mAttacher != null) {
                             mAttacher.update();
                         } else {
-                            mAttacher = new PhotoViewAttacher(imageView);
+                            mAttacher = new PhotoViewAttacher(mImageView);
                         }
                     }
 

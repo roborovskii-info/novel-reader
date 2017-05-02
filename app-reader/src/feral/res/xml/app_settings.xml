@@ -37,7 +37,7 @@
         <Preference android:title="@string/pref_title_about">
             <intent
                     android:targetPackage="info.bunny178.novel.reader"
-                    android:targetClass="info.bunny178.novel.reader.AboutActivity"/>
+                    android:targetClass="info.bunny178.novel.reader.view.AboutActivity"/>
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>

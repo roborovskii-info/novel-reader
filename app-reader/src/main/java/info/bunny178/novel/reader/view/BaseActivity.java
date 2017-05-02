@@ -1,4 +1,4 @@
-package info.bunny178.novel.reader;
+package info.bunny178.novel.reader.view;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 
+import info.bunny178.novel.reader.R;
 import info.bunny178.util.PreferenceProvider;
 
 /**
