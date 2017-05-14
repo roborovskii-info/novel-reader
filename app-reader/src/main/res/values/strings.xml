@@ -62,6 +62,9 @@
     <string name="warn_delete_novel_confirm">小説のデータを削除します。</string>
     <string name="warn_delete_bookmark_confirm">しおりを削除します。</string>
 
+    <string name="info_release_note_title">更新内容</string>
+    <string name="info_release_note">FC2小説のWEBページからアプリを開くことができるようになりました。\nすべての小説をお楽しみいただけます。</string>
+
     <string name="theme_light">ホワイト</string>
     <string name="theme_dark">ダーク</string>
     <string name="theme_cute">キュート</string>

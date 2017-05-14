@@ -30,10 +30,11 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <data
-                        android:scheme="http"
-                        android:host="novel.fc2.com"
-                        android:path="/novel.php"/>
+
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="novel.fc2.com"/>
+                <data android:path="/novel.php"/>
             </intent-filter>
         </activity>
         <activity

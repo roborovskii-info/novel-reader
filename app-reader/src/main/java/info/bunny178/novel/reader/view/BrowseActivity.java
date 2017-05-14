@@ -7,6 +7,8 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
@@ -37,6 +39,7 @@ import info.bunny178.novel.reader.view.fragment.NovelPagerFragment;
 import info.bunny178.novel.reader.view.fragment.NovelSearchFragment;
 import info.bunny178.novel.reader.view.fragment.SettingsFragment;
 import info.bunny178.novel.reader.model.Novel;
+import info.bunny178.util.AlertDialogFragment;
 import info.bunny178.util.PreferenceProvider;
 import io.fabric.sdk.android.Fabric;
 
@@ -117,6 +120,8 @@ public class BrowseActivity extends BaseActivity {
             }
             int novelId = Integer.parseInt(nid);
             startNovelDetailActivity(novelId);
+        } else {
+            handleReleaseNote();
         }
     }
 
@@ -163,6 +168,34 @@ public class BrowseActivity extends BaseActivity {
         }
         launchCount++;
         pp.writeInt(R.string.pref_key_launch_count, launchCount);
+    }
+
+    /**
+     * バージョンが変わっていたら更新内容を表示する
+     */
+    private void handleReleaseNote() {
+        PreferenceProvider pp = new PreferenceProvider(this);
+        try {
+            PackageManager pm = getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(getPackageName(), PackageManager.GET_META_DATA);
+            int versionCode = pp.readInt(R.string.pref_key_version_code);
+            if (versionCode < pi.versionCode) {
+                AlertDialogFragment fragment = AlertDialogFragment.newInstance(this,
+                        R.string.info_release_note_title,
+                        R.string.info_release_note, 0);
+                fragment.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int witch) {
+                        dialog.dismiss();
+                    }
+                });
+                fragment.show(getSupportFragmentManager(), "release note");
+
+                pp.writeInt(R.string.pref_key_version_code, pi.versionCode);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            /* NOP */
+        }
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
